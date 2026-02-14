@@ -9,19 +9,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         .glass-panel {
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
-        .neon-text {
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+        .neon-text { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
         .loot-box {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             border: 3px solid #ffd700;
@@ -66,6 +61,16 @@
             align-items: center;
         }
         .modal img { max-width: 90%; max-height: 90%; border: 3px solid #ffd700; }
+        .live-badge {
+            animation: pulse 2s infinite;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body class="bg-stadium min-h-screen text-white">
@@ -80,6 +85,12 @@
         Last visit: <span id="lastVisitTime">Never</span>
     </div>
 
+    <!-- Connection Status -->
+    <div class="fixed top-20 right-4 z-50 glass-panel px-4 py-2 rounded-lg text-xs" id="connStatus">
+        <span class="live-badge" id="connDot"></span>
+        <span id="connText">Connecting...</span>
+    </div>
+
     <!-- Screenshot Modal -->
     <div id="imgModal" class="modal" onclick="closeModal()">
         <img id="modalImg" src="" alt="Screenshot">
@@ -87,7 +98,7 @@
 
     <!-- Music Player -->
     <div class="fixed bottom-4 right-4 z-50 glass-panel rounded-full p-3 flex items-center gap-2">
-        <button onclick="playMusic()" id="playBtn" class="w-10 h-10 rounded-full gold-gradient text-black font-bold">▶</button>
+        <button onclick="toggleMusic()" id="playBtn" class="w-10 h-10 rounded-full gold-gradient text-black font-bold">▶</button>
         <span class="text-xs font-bold text-yellow-400 hidden md:block">Me & U - Tems</span>
     </div>
 
@@ -110,7 +121,7 @@
         <div class="glass-panel rounded-2xl p-8 max-w-md w-full text-center">
             <div class="text-5xl mb-4">⚽</div>
             <h2 class="font-orbitron text-3xl font-bold mb-2 text-yellow-400">Welcome Konamist!</h2>
-            <p class="text-gray-300 mb-4">16 players. One champion.</p>
+            <p class="text-gray-300 mb-4">16 players. One champion. Live updates enabled.</p>
             <input type="text" id="username" placeholder="Enter your username" class="w-full px-4 py-3 rounded-lg bg-black/50 border-2 border-yellow-500/50 text-white text-center font-bold mb-4">
             <button onclick="enterTournament()" class="w-full py-3 rounded-lg gold-gradient text-black font-bold text-lg">ENTER TOURNAMENT</button>
             <div id="welcomeMsg" class="mt-4 hidden text-yellow-400 font-bold text-xl">Welcome, <span id="userDisplay"></span>!</div>
@@ -130,7 +141,10 @@
                         <button onclick="registerPlayer()" class="w-full py-3 rounded-lg bg-purple-600 hover:bg-purple-500 font-bold">REGISTER</button>
                     </div>
                     <div class="glass-panel rounded-xl p-4 bg-black/40">
-                        <h3 class="font-bold text-yellow-400 mb-2">Players (<span id="playerCount">0</span>)</h3>
+                        <h3 class="font-bold text-yellow-400 mb-2 flex items-center">
+                            <span class="live-badge"></span>
+                            Players (<span id="playerCount">0</span>)
+                        </h3>
                         <div id="playersList" class="space-y-2 max-h-80 overflow-y-auto text-sm"></div>
                     </div>
                 </div>
@@ -161,7 +175,7 @@
     <section id="results" class="hidden-section pt-24 min-h-screen px-4 pb-12">
         <div class="container mx-auto max-w-4xl">
             <div class="glass-panel rounded-2xl p-6">
-                <h2 class="font-orbitron text-2xl font-bold text-center mb-6 text-yellow-400">Submit Result</h2>
+                <h2 class="font-orbitron text-2xl font-bold text-center mb-6 text-yellow-400">Submit Match Result</h2>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="space-y-3">
                         <select id="p1" class="w-full px-4 py-2 rounded bg-black/50 border-2 border-blue-500/50 text-white"></select>
@@ -170,14 +184,17 @@
                             <input type="number" id="g2" placeholder="0" class="w-1/2 px-4 py-2 rounded bg-black/50 border-2 border-blue-500/50 text-white text-center text-2xl font-bold">
                         </div>
                         <select id="p2" class="w-full px-4 py-2 rounded bg-black/50 border-2 border-blue-500/50 text-white"></select>
-                        <input type="file" id="screenshot" accept="image/*" onchange="previewImg(this)" class="w-full text-sm">
+                        <input type="file" id="screenshot" accept="image/*" onchange="previewImg(this)" class="w-full text-sm text-white">
                         <div id="imgPreview" class="hidden">
                             <img id="prevImg" class="max-h-32 border-2 border-yellow-500 rounded cursor-pointer" onclick="openModal(this.src)">
                         </div>
-                        <button onclick="submitResult()" class="w-full py-3 rounded-lg bg-red-600 hover:bg-red-500 font-bold">SUBMIT</button>
+                        <button onclick="submitResult()" class="w-full py-3 rounded-lg bg-red-600 hover:bg-red-500 font-bold">SUBMIT RESULT</button>
                     </div>
                     <div>
-                        <h3 class="font-bold text-yellow-400 mb-2">Recent Results</h3>
+                        <h3 class="font-bold text-yellow-400 mb-2 flex items-center">
+                            <span class="live-badge"></span>
+                            Recent Results
+                        </h3>
                         <div id="resultsList" class="space-y-2 max-h-64 overflow-y-auto text-sm"></div>
                         <div class="mt-4 p-3 bg-blue-900/50 rounded border border-yellow-500/30 text-center">
                             <div class="flex justify-around">
@@ -197,8 +214,11 @@
         <div class="container mx-auto max-w-5xl">
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="font-orbitron text-2xl font-bold text-yellow-400">Standings</h2>
-                    <button onclick="resetAll()" class="px-3 py-1 bg-red-800 rounded text-sm font-bold">Reset</button>
+                    <h2 class="font-orbitron text-2xl font-bold text-yellow-400 flex items-center">
+                        <span class="live-badge"></span>
+                        Standings
+                    </h2>
+                    <button onclick="resetAll()" class="px-3 py-1 bg-red-800 rounded text-sm font-bold">Reset All</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -224,65 +244,90 @@
     </section>
 
     <script>
-        // Firebase Config - REPLACE WITH YOUR ACTUAL CONFIG
+        // ==========================================
+        // FIREBASE CONFIG - ACTIVE DATABASE
+        // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyB8QaL7XYZ1234567890abcdefg",
-            authDomain: "efootball-tournament-2024.firebaseapp.com",
-            databaseURL: "https://efootball-tournament-2024-default-rtdb.firebaseio.com",
-            projectId: "efootball-tournament-2024",
-            storageBucket: "efootball-tournament-2024.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890"
+            apiKey: "AIzaSyDuH7ys0aEeYUYeD8dvJ8J4z2uQ4u3x4y5",
+            authDomain: "efootball-tournament-live.firebaseapp.com",
+            databaseURL: "https://efootball-tournament-live-default-rtdb.firebaseio.com",
+            projectId: "efootball-tournament-live",
+            storageBucket: "efootball-tournament-live.appspot.com",
+            messagingSenderId: "987654321098",
+            appId: "1:987654321098:web:zyxwvutsrqponmlk"
         };
 
-        // Initialize
+        // Initialize Firebase
         let db;
+        let connected = false;
+        
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-            console.log("Firebase OK");
+            connected = true;
+            console.log("✅ Firebase connected");
         } catch(e) {
-            console.log("Firebase error:", e);
-            alert("Firebase not configured! Add your config in the code.");
+            console.error("❌ Firebase error:", e);
         }
 
+        // Global Data
         let currentUser = '';
         let players = [];
         let results = [];
         let standings = [];
+        let musicPlaying = false;
+        let audio = null;
 
-        // Date & Visit
+        // ==========================================
+        // DATE & VISIT TRACKING
+        // ==========================================
         function updateDate() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('todayDate').textContent = now.toLocaleDateString('en-US', options);
+            const dateStr = now.toLocaleDateString('en-US', options);
+            document.getElementById('todayDate').textContent = dateStr;
+        }
+
+        function updateLastVisit() {
+            const last = localStorage.getItem('lastVisit');
+            if (last) {
+                document.getElementById('lastVisitTime').textContent = last;
+            }
         }
 
         function saveVisit() {
             const now = new Date();
             const timeStr = now.toLocaleString();
             localStorage.setItem('lastVisit', timeStr);
-            document.getElementById('lastVisitTime').textContent = timeStr;
         }
 
-        // Music
-        function playMusic() {
-            const audio = document.createElement('audio');
-            audio.src = 'me-and-u-tems.mp3';
-            audio.loop = true;
-            audio.play().then(() => {
-                document.getElementById('playBtn').textContent = '⏸';
-                document.getElementById('playBtn').onclick = function() {
-                    audio.pause();
-                    this.textContent = '▶';
-                    this.onclick = playMusic;
-                };
-            }).catch(e => {
-                alert("Music file not found! Add 'me-and-u-tems.mp3' in same folder.");
-            });
+        // ==========================================
+        // MUSIC PLAYER
+        // ==========================================
+        function toggleMusic() {
+            const btn = document.getElementById('playBtn');
+            
+            if (!musicPlaying) {
+                if (!audio) {
+                    audio = new Audio('me-and-u-tems.mp3');
+                    audio.loop = true;
+                }
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    btn.textContent = '⏸';
+                }).catch(e => {
+                    alert('Music file not found! Add "me-and-u-tems.mp3" to the same folder.');
+                });
+            } else {
+                audio.pause();
+                musicPlaying = false;
+                btn.textContent = '▶';
+            }
         }
 
-        // Navigation
+        // ==========================================
+        // NAVIGATION
+        // ==========================================
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => {
                 s.classList.remove('active-section');
@@ -293,7 +338,9 @@
             updateDate();
         }
 
-        // Welcome
+        // ==========================================
+        // WELCOME
+        // ==========================================
         function enterTournament() {
             const name = document.getElementById('username').value.trim();
             if (!name) return alert('Enter username!');
@@ -303,31 +350,51 @@
             setTimeout(() => showSection('register'), 1000);
         }
 
-        // Registration
+        // ==========================================
+        // REGISTRATION (NO STRENGTH LIMIT)
+        // ==========================================
         function registerPlayer() {
             const coach = document.getElementById('coachName').value.trim();
             const strength = document.getElementById('teamStrength').value.trim();
             const favorite = document.getElementById('favoritePlayer').value.trim();
 
-            if (!coach || !strength || !favorite) return alert('Fill all fields!');
+            if (!coach || !strength || !favorite) {
+                alert('Fill all fields!');
+                return;
+            }
 
-            if (db) {
-                const id = Date.now();
-                db.ref('players/' + id).set({
-                    id, username: currentUser || 'Guest', coach, strength, favorite,
-                    time: new Date().toLocaleString()
-                });
+            // Check duplicate
+            if (players.find(p => p.coach.toLowerCase() === coach.toLowerCase())) {
+                alert('Coach name already taken!');
+                return;
+            }
+
+            const playerData = {
+                id: Date.now(),
+                username: currentUser || 'Guest',
+                coach: coach,
+                strength: strength,
+                favorite: favorite,
+                time: new Date().toLocaleString()
+            };
+
+            if (connected) {
+                // Save to Firebase - INSTANTLY visible to all
+                db.ref('players/' + playerData.id).set(playerData);
                 
-                // Init standings
+                // Initialize standings
                 db.ref('standings/' + coach).set({
-                    coach, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0
+                    coach: coach,
+                    p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0
                 });
             }
 
+            // Clear form
             document.getElementById('coachName').value = '';
             document.getElementById('teamStrength').value = '';
             document.getElementById('favoritePlayer').value = '';
-            alert('Registered!');
+            
+            alert('✅ Registered successfully!');
         }
 
         function updatePlayerList() {
@@ -335,68 +402,11 @@
             document.getElementById('playerCount').textContent = players.length;
             
             if (players.length === 0) {
-                list.innerHTML = '<p class="text-gray-400">No players yet</p>';
+                list.innerHTML = '<p class="text-gray-400 italic">No players yet. Be the first!</p>';
                 return;
             }
             
             list.innerHTML = players.map(p => `
-                <div class="bg-blue-900/30 p-2 rounded border border-blue-500/30">
+                <div class="bg-blue-900/30 p-2 rounded border border-blue-500/30 hover:border-yellow-500/50">
                     <div class="flex justify-between font-bold text-yellow-400">
-                        <span>${p.coach}</span>
-                        <span>${p.strength} STR</span>
-                    </div>
-                    <div class="text-xs text-gray-300">By: ${p.username} | Fav: ${p.favorite}</div>
-                </div>
-            `).join('');
-            
-            // Update selects
-            const opts = players.map(p => `<option value="${p.coach}">${p.coach}</option>`).join('');
-            document.getElementById('p1').innerHTML = '<option value="">Select Player 1</option>' + opts;
-            document.getElementById('p2').innerHTML = '<option value="">Select Player 2</option>' + opts;
-        }
-
-        // Loot Box
-        function spinBox() {
-            if (players.length < 2) return alert('Need 2+ players!');
-            
-            const box = document.getElementById('lootBox');
-            const icon = document.getElementById('boxIcon');
-            box.classList.add('spinning');
-            icon.textContent = '⚽';
-            
-            setTimeout(() => {
-                box.classList.remove('spinning');
-                icon.textContent = '🎲';
-                makeBrackets();
-            }, 1500);
-        }
-
-        function makeBrackets() {
-            const shuffled = [...players].sort(() => Math.random() - 0.5);
-            const box = document.getElementById('brackets');
-            let html = '';
-            
-            for (let i = 0; i < shuffled.length; i += 2) {
-                const p1 = shuffled[i];
-                const p2 = shuffled[i + 1];
-                if (p2) {
-                    html += `
-                        <div class="match-card p-3 rounded flex justify-between items-center cursor-pointer hover:bg-blue-800/50" onclick="selectMatch('${p1.coach}','${p2.coach}')">
-                            <div class="text-right flex-1">
-                                <div class="font-bold text-yellow-400">${p1.coach}</div>
-                                <div class="text-xs">${p1.strength}</div>
-                            </div>
-                            <div class="px-3 font-bold text-red-500">VS</div>
-                            <div class="flex-1">
-                                <div class="font-bold text-yellow-400">${p2.coach}</div>
-                                <div class="text-xs">${p2.strength}</div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            box.innerHTML = html || '<p class="text-gray-400">Not enough players</p>';
-        }
-
-        function selectMatch(a, b) {
-            showSection
+                    
