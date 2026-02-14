@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball Tournament</title>
+    <title>eFootball Tournament 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -11,7 +11,7 @@
     <style>
         body { 
             font-family: 'Rajdhani', sans-serif; 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
                         url('/mnt/kimi/upload/file_000000003da871fdb26bf00223f60724.png');
             background-size: cover;
             background-position: center;
@@ -20,7 +20,7 @@
         }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         .glass {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
@@ -29,12 +29,17 @@
             background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
             color: black;
             font-weight: bold;
+            transition: all 0.3s;
+        }
+        .gold-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .vs-box {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             border: 2px solid #ffd700;
@@ -66,13 +71,14 @@
         .modal img { max-width: 95%; max-height: 95%; border: 3px solid #ffd700; }
         .match-item { transition: all 0.3s; }
         .match-item:hover { transform: translateX(5px); }
+        input:focus, select:focus { outline: none; border-color: #ffd700 !important; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
     <!-- Top Bar -->
     <div class="fixed top-0 w-full z-50 glass border-b border-yellow-500/30 px-4 py-3 flex justify-between items-center">
-        <h1 class="font-orbitron text-xl font-bold text-yellow-400">EFOOTBALL<span class="text-white">2024</span></h1>
+        <h1 class="font-orbitron text-xl font-bold text-yellow-400">EFOOTBALL<span class="text-white">2026</span></h1>
         <div class="flex items-center gap-4 text-xs">
             <span class="glass px-3 py-1 rounded text-yellow-400" id="dateDisplay">📅 Loading...</span>
             <span class="glass px-3 py-1 rounded" id="connStatus">
@@ -83,7 +89,7 @@
     </div>
 
     <!-- Music Player -->
-    <button onclick="playMusic()" id="musicBtn" class="fixed bottom-4 right-4 z-50 w-12 h-12 rounded-full gold-btn text-xl">🎵</button>
+    <button onclick="playMusic()" id="musicBtn" class="fixed bottom-4 right-4 z-50 w-12 h-12 rounded-full gold-btn text-xl shadow-lg">🎵</button>
 
     <!-- Screenshot Modal -->
     <div id="modal" class="modal" onclick="closeModal()">
@@ -93,29 +99,42 @@
     <!-- Main Content -->
     <div class="pt-20 px-4 max-w-6xl mx-auto">
 
-        <!-- Welcome -->
+        <!-- Welcome Screen -->
         <div id="welcome" class="text-center py-20">
             <div class="glass rounded-2xl p-8 max-w-md mx-auto glow">
                 <div class="text-6xl mb-4">⚽</div>
                 <h2 class="font-orbitron text-3xl font-bold text-yellow-400 mb-2">KONAMIST</h2>
-                <p class="text-gray-300 mb-6">16 Players. Live Tournament.</p>
-                <input type="text" id="username" placeholder="Your username" class="w-full px-4 py-3 rounded bg-black/50 border border-yellow-500/50 text-white text-center mb-4">
-                <button onclick="enter()" class="w-full py-3 rounded gold-btn text-lg">ENTER</button>
+                <p class="text-gray-300 mb-6">16 Players. Live Tournament. eFootball 2026</p>
+                
+                <form onsubmit="event.preventDefault(); enter();" class="space-y-4">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        placeholder="Enter your username" 
+                        class="w-full px-4 py-3 rounded bg-black/50 border border-yellow-500/50 text-white text-center text-lg"
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="w-full py-3 rounded gold-btn text-lg font-bold">
+                        ENTER TOURNAMENT
+                    </button>
+                </form>
+                
+                <p class="text-xs text-gray-400 mt-4">Press Enter or click button to continue</p>
             </div>
         </div>
 
         <!-- Dashboard -->
         <div id="dashboard" class="hidden">
             
-            <!-- Nav -->
+            <!-- Navigation -->
             <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
-                <button onclick="show('register')" class="px-4 py-2 rounded bg-purple-600 hover:bg-purple-500 font-bold text-sm">REGISTER</button>
-                <button onclick="show('lootbox')" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-sm">LOOT BOX</button>
-                <button onclick="show('results')" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 font-bold text-sm">RESULTS</button>
-                <button onclick="show('standings')" class="px-4 py-2 rounded bg-green-600 hover:bg-green-500 font-bold text-sm">STANDINGS</button>
+                <button onclick="show('register')" class="px-4 py-2 rounded bg-purple-600 hover:bg-purple-500 font-bold text-sm transition">REGISTER</button>
+                <button onclick="show('lootbox')" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-sm transition">LOOT BOX</button>
+                <button onclick="show('results')" class="px-4 py-2 rounded bg-red-600 hover:bg-red-500 font-bold text-sm transition">RESULTS</button>
+                <button onclick="show('standings')" class="px-4 py-2 rounded bg-green-600 hover:bg-green-500 font-bold text-sm transition">STANDINGS</button>
             </div>
 
-            <!-- Register -->
+            <!-- Register Section -->
             <div id="register" class="glass rounded-xl p-6 mb-6">
                 <h3 class="font-orbitron text-xl text-yellow-400 mb-4 flex items-center gap-2">
                     <span class="live-dot"></span> REGISTER PLAYER
@@ -123,18 +142,18 @@
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="space-y-3">
                         <input type="text" id="rName" placeholder="Coach Name" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
-                        <input type="text" id="rStr" placeholder="Team Strength (any number)" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
+                        <input type="text" id="rStr" placeholder="Team Strength (e.g. 85, 90)" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
                         <input type="text" id="rFav" placeholder="Favorite Player" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
-                        <button onclick="register()" class="w-full py-3 rounded bg-purple-600 hover:bg-purple-500 font-bold">REGISTER</button>
+                        <button onclick="register()" class="w-full py-3 rounded bg-purple-600 hover:bg-purple-500 font-bold transition">REGISTER PLAYER</button>
                     </div>
                     <div>
-                        <p class="text-yellow-400 font-bold mb-2">Players: <span id="pCount">0</span>/16</p>
+                        <p class="text-yellow-400 font-bold mb-2">Registered Players: <span id="pCount">0</span>/16</p>
                         <div id="pList" class="space-y-2 max-h-64 overflow-y-auto text-sm"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Loot Box -->
+            <!-- Loot Box Section -->
             <div id="lootbox" class="glass rounded-xl p-6 mb-6 hidden">
                 <h3 class="font-orbitron text-xl text-yellow-400 mb-4">MATCHMAKING</h3>
                 <div class="grid md:grid-cols-2 gap-4">
@@ -142,7 +161,7 @@
                         <div class="text-center">
                             <div class="text-5xl mb-2" id="spinIcon">🎲</div>
                             <p class="font-bold text-xl">SPIN</p>
-                            <p class="text-xs mt-2 text-gray-300">Click to generate matches</p>
+                            <p class="text-xs mt-2 text-gray-300">Click to generate random matches</p>
                         </div>
                     </div>
                     <div>
@@ -152,20 +171,20 @@
                 </div>
             </div>
 
-            <!-- Results -->
+            <!-- Results Section -->
             <div id="results" class="glass rounded-xl p-6 mb-6 hidden">
                 <h3 class="font-orbitron text-xl text-yellow-400 mb-4 flex items-center gap-2">
-                    <span class="live-dot"></span> SUBMIT RESULT
+                    <span class="live-dot"></span> SUBMIT MATCH RESULT
                 </h3>
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="space-y-3">
                         <select id="s1" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
                             <option value="">Select Player 1</option>
                         </select>
-                        <div class="flex gap-2 items-center">
-                            <input type="number" id="sg1" placeholder="0" min="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
-                            <span class="text-yellow-400 font-bold">VS</span>
-                            <input type="number" id="sg2" placeholder="0" min="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
+                        <div class="flex gap-2 items-center justify-center">
+                            <input type="number" id="sg1" placeholder="0" min="0" class="w-24 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
+                            <span class="text-yellow-400 font-bold text-xl">VS</span>
+                            <input type="number" id="sg2" placeholder="0" min="0" class="w-24 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
                         </div>
                         <select id="s2" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
                             <option value="">Select Player 2</option>
@@ -173,9 +192,9 @@
                         <input type="file" id="ss" accept="image/*" onchange="preview(this)" class="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                         <div id="sPreview" class="hidden">
                             <img id="sImg" class="h-24 border-2 border-yellow-500 rounded cursor-pointer" onclick="openModal(this.src)">
-                            <button onclick="clearImage()" class="text-xs text-red-400 mt-1">Remove image</button>
+                            <button onclick="clearImage()" class="text-xs text-red-400 mt-1 hover:underline">Remove image</button>
                         </div>
-                        <button onclick="submit()" class="w-full py-3 rounded bg-red-600 hover:bg-red-500 font-bold">SUBMIT RESULT</button>
+                        <button onclick="submit()" class="w-full py-3 rounded bg-red-600 hover:bg-red-500 font-bold transition">SUBMIT RESULT</button>
                     </div>
                     <div>
                         <p class="text-yellow-400 font-bold mb-2">Recent Results</p>
@@ -188,13 +207,13 @@
                 </div>
             </div>
 
-            <!-- Standings -->
+            <!-- Standings Section -->
             <div id="standings" class="glass rounded-xl p-6 hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-orbitron text-xl text-yellow-400 flex items-center gap-2">
-                        <span class="live-dot"></span> STANDINGS
+                        <span class="live-dot"></span> TOURNAMENT STANDINGS
                     </h3>
-                    <button onclick="reset()" class="px-3 py-1 bg-red-800 hover:bg-red-700 rounded text-xs font-bold">RESET ALL DATA</button>
+                    <button onclick="reset()" class="px-3 py-1 bg-red-800 hover:bg-red-700 rounded text-xs font-bold transition">RESET ALL DATA</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
@@ -222,7 +241,7 @@
 
     <script>
         // ==========================================
-        // FIREBASE SETUP
+        // FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDuH7ys0aEeYUYeD8dvJ8J4z2uQ4u3x4y5",
@@ -239,21 +258,20 @@
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             connected = true;
-            console.log("Firebase connected successfully");
+            console.log("✅ Firebase connected successfully");
         } catch(e) { 
-            console.log("Firebase init failed:", e);
-            alert("Warning: Could not connect to live database. Using local storage only.");
+            console.log("❌ Firebase init failed:", e);
         }
 
-        // Data with localStorage backup
+        // Data storage with localStorage backup
         let user = localStorage.getItem('efootball_user') || '';
-        let players = JSON.parse(localStorage.getItem('efootball_players') || '[]');
-        let matches = JSON.parse(localStorage.getItem('efootball_matches') || '[]');
-        let table = JSON.parse(localStorage.getItem('efootball_table') || '[]');
+        let players = [];
+        let matches = [];
+        let table = [];
         let audio = null;
 
         // ==========================================
-        // UTILITIES
+        // UTILITY FUNCTIONS
         // ==========================================
         function $(id) { return document.getElementById(id); }
 
@@ -291,11 +309,16 @@
             }
         }
 
-        function openModal(src) { $('modalImg').src = src; $('modal').style.display = 'flex'; }
+        function openModal(src) { 
+            if (!src) return;
+            $('modalImg').src = src; 
+            $('modal').style.display = 'flex'; 
+        }
+        
         function closeModal() { $('modal').style.display = 'none'; }
 
         function preview(input) {
-            if (input.files[0]) {
+            if (input.files && input.files[0]) {
                 const r = new FileReader();
                 r.onload = (e) => { 
                     $('sImg').src = e.target.result; 
@@ -311,31 +334,83 @@
         }
 
         // ==========================================
-        // NAVIGATION
+        // NAVIGATION & AUTH
         // ==========================================
         function enter() {
-            const n = $('username').value.trim();
-            if (!n) return alert('Enter username!');
+            const usernameInput = $('username');
+            const n = usernameInput.value.trim();
+            
+            if (!n) {
+                usernameInput.style.borderColor = '#ff0000';
+                usernameInput.placeholder = '⚠️ Username required!';
+                setTimeout(() => {
+                    usernameInput.style.borderColor = '';
+                    usernameInput.placeholder = 'Enter your username';
+                }, 2000);
+                return;
+            }
+            
             user = n;
             localStorage.setItem('efootball_user', user);
+            
+            // Hide welcome, show dashboard
             $('welcome').classList.add('hidden');
             $('dashboard').classList.remove('hidden');
+            
+            // Initialize
             show('register');
+            loadData();
             initFirebaseListeners();
+            
+            console.log(`✅ User entered: ${user}`);
         }
 
         function show(section) {
-            ['register','lootbox','results','standings'].forEach(s => $(s).classList.add('hidden'));
-            $(section).classList.remove('hidden');
-            if (section === 'standings') updateStandings();
-            if (section === 'results') updateStats();
+            ['register','lootbox','results','standings'].forEach(s => {
+                const el = $(s);
+                if (el) el.classList.add('hidden');
+            });
+            
+            const target = $(section);
+            if (target) {
+                target.classList.remove('hidden');
+                if (section === 'standings') updateStandings();
+                if (section === 'results') updateStats();
+            }
         }
 
         // ==========================================
-        // FIREBASE LISTENERS (Real-time sync)
+        // DATA MANAGEMENT
         // ==========================================
+        function loadData() {
+            // Load from localStorage first
+            try {
+                const savedPlayers = localStorage.getItem('efootball_players');
+                const savedMatches = localStorage.getItem('efootball_matches');
+                const savedTable = localStorage.getItem('efootball_table');
+                
+                if (savedPlayers) players = JSON.parse(savedPlayers);
+                if (savedMatches) matches = JSON.parse(savedMatches);
+                if (savedTable) table = JSON.parse(savedTable);
+                
+                console.log(`📊 Loaded: ${players.length} players, ${matches.length} matches`);
+                
+                updatePlayers();
+                updateMatches();
+                updateStats();
+            } catch(e) {
+                console.error("Error loading data:", e);
+                players = [];
+                matches = [];
+                table = [];
+            }
+        }
+
         function initFirebaseListeners() {
-            if (!connected) return;
+            if (!connected || !db) {
+                console.log("⚠️ Firebase not connected, using localStorage only");
+                return;
+            }
             
             // Listen for players
             db.ref('players').on('value', (snapshot) => {
@@ -344,6 +419,7 @@
                     players = Object.values(data);
                     saveLocal();
                     updatePlayers();
+                    console.log("🔄 Players synced from Firebase");
                 }
             });
 
@@ -351,77 +427,4 @@
             db.ref('matches').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    matches = Object.values(data).sort((a,b) => b.id - a.id);
-                    saveLocal();
-                    updateMatches();
-                    updateStats();
-                }
-            });
-
-            // Listen for table
-            db.ref('table').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    table = Object.values(data);
-                    saveLocal();
-                    updateStandings();
-                }
-            });
-        }
-
-        // ==========================================
-        // REGISTER
-        // ==========================================
-        function register() {
-            const name = $('rName').value.trim();
-            const str = $('rStr').value.trim();
-            const fav = $('rFav').value.trim();
-            
-            if (!name || !str || !fav) return alert('Fill all fields!');
-            if (players.length >= 16) return alert('Tournament full (16 players max)!');
-            if (players.find(p => p.name.toLowerCase() === name.toLowerCase())) return alert('Name taken!');
-
-            const p = { 
-                id: Date.now(), 
-                name, 
-                str, 
-                fav, 
-                user: user || 'Guest', 
-                time: new Date().toLocaleString() 
-            };
-            
-            // Save to Firebase
-            if (connected) {
-                db.ref('players/' + p.id).set(p).catch(e => console.error("Firebase error:", e));
-                db.ref('table/' + name).set({
-                    name, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0
-                });
-            }
-            
-            // Local backup
-            players.push(p);
-            saveLocal();
-            updatePlayers();
-            
-            // Clear form
-            $('rName').value = ''; 
-            $('rStr').value = ''; 
-            $('rFav').value = '';
-            
-            alert(`Player ${name} registered successfully!`);
-        }
-
-        function updatePlayers() {
-            $('pCount').textContent = players.length;
-            $('pList').innerHTML = players.map(p => `
-                <div class="bg-blue-900/30 p-2 rounded flex justify-between items-center">
-                    <div>
-                        <span class="text-yellow-400 font-bold">${p.name}</span>
-                        <span class="text-xs text-gray-400 ml-2">by ${p.user}</span>
-                    </div>
-                    <span class="text-sm">${p.str}</span>
-                </div>
-            `).join('') || '<p class="text-gray-400 italic">No players registered yet</p>';
-            
-            // Update dropdowns
-            const opts = players.map(p => `<opt
+                 
