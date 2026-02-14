@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball Tournament - February 14th</title>
+    <title>eFootball Tournament</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -17,7 +17,7 @@
             font-family: 'Orbitron', sans-serif;
         }
         .glass-panel {
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -30,6 +30,7 @@
             border: 3px solid #ffd700;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
             animation: pulse-glow 2s infinite;
+            cursor: pointer;
         }
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); }
@@ -91,11 +92,34 @@
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
         .screenshot-preview {
-            max-width: 200px;
-            max-height: 150px;
+            max-width: 100%;
+            max-height: 200px;
             border: 2px solid #ffd700;
             border-radius: 8px;
             margin-top: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .screenshot-preview:hover {
+            transform: scale(1.05);
+        }
+        .screenshot-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .screenshot-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
         }
         .result-bar {
             background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
@@ -159,13 +183,55 @@
             from { transform: translate(-50%, -20px); opacity: 0; }
             to { transform: translate(-50%, 0); opacity: 1; }
         }
+        .last-visit {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            font-size: 12px;
+            color: #ffd700;
+        }
+        .current-date {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 50;
+            font-size: 14px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .view-screenshot-btn {
+            background: #ffd700;
+            color: black;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body class="bg-stadium min-h-screen text-white">
 
+    <!-- Current Date Display -->
+    <div class="current-date glass-panel px-4 py-2 rounded-lg">
+        📅 <span id="currentDate"></span>
+    </div>
+
+    <!-- Last Visit Display -->
+    <div class="last-visit glass-panel px-4 py-2 rounded-lg">
+        👋 Last visit: <span id="lastVisit">Never</span>
+    </div>
+
+    <!-- Screenshot Modal -->
+    <div id="screenshotModal" class="screenshot-modal" onclick="closeScreenshot()">
+        <img id="modalImage" src="" alt="Screenshot">
+    </div>
+
     <!-- Live Notification -->
     <div id="notification" class="notification">
-        <span id="notifText">New player registered!</span>
+        <span id="notifText">New update!</span>
     </div>
 
     <!-- Firebase Sync Indicator -->
@@ -222,7 +288,7 @@
 
             <div id="welcomeMessage" class="mt-6 hidden">
                 <p class="text-2xl font-bold text-yellow-400">Welcome, <span id="displayName"></span>!</p>
-                <p class="text-gray-300 mt-2">Ready to battle on February 14th?</p>
+                <p class="text-gray-300 mt-2">Ready to battle?</p>
             </div>
         </div>
     </section>
@@ -242,11 +308,10 @@
                         </div>
                         
                         <div>
-                            <label class="block text-yellow-400 font-bold mb-2">Team Strength (2000-3500)</label>
-                            <input type="number" id="teamStrength" min="2000" max="3500" placeholder="e.g., 2800" 
-                                class="w-full px-4 py-3 rounded-lg bg-black/50 border-2 border-blue-500/50 text-white"
-                                oninput="validateStrength(this)">
-                            <p class="text-xs text-gray-400 mt-1">Value must be between 2000 and 3500</p>
+                            <label class="block text-yellow-400 font-bold mb-2">Team Strength</label>
+                            <input type="number" id="teamStrength" placeholder="Enter your actual strength (e.g., 2850)" 
+                                class="w-full px-4 py-3 rounded-lg bg-black/50 border-2 border-blue-500/50 text-white">
+                            <p class="text-xs text-gray-400 mt-1">Enter your actual team strength value</p>
                         </div>
                         
                         <div>
@@ -282,7 +347,7 @@
             <h2 class="font-orbitron text-4xl font-bold mb-8 text-yellow-400 neon-text">MATCHMAKING ARENA</h2>
             
             <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="loot-box rounded-2xl p-12 aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform" 
+                <div class="loot-box rounded-2xl p-12 aspect-square flex items-center justify-center" 
                      onclick="spinLootBox()" id="lootBox">
                     <div class="text-center">
                         <div class="text-8xl mb-4" id="boxIcon">🎲</div>
@@ -349,8 +414,8 @@
                                 class="w-full px-4 py-3 rounded-lg bg-black/50 border-2 border-dashed border-yellow-500/50 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-400 file:text-black hover:file:bg-yellow-300"
                                 onchange="previewScreenshot(this)">
                             <div id="screenshotPreview" class="hidden mt-4">
-                                <img id="previewImg" class="screenshot-preview mx-auto" alt="Screenshot preview">
-                                <p class="text-center text-sm text-gray-400 mt-2">Screenshot ready to upload</p>
+                                <img id="previewImg" class="screenshot-preview mx-auto" alt="Screenshot preview" onclick="openScreenshot(this.src)">
+                                <p class="text-center text-sm text-gray-400 mt-2">Click image to enlarge</p>
                             </div>
                         </div>
 
@@ -368,37 +433,4 @@
                             </h3>
                             <div id="recentResults" class="space-y-3 max-h-64 overflow-y-auto">
                                 <p class="text-gray-400 text-center italic">Loading results...</p>
-                            </div>
-                        </div>
-
-                        <div class="result-bar rounded-xl p-4 text-center">
-                            <h4 class="font-orbitron text-lg font-bold text-yellow-400 mb-2">Results Bar</h4>
-                            <div class="flex justify-around text-sm">
-                                <div>
-                                    <span class="block text-2xl font-bold text-green-400" id="totalMatches">0</span>
-                                    <span class="text-gray-300">Matches</span>
-                                </div>
-                                <div>
-                                    <span class="block text-2xl font-bold text-yellow-400" id="totalGoals">0</span>
-                                    <span class="text-gray-300">Goals</span>
-                                </div>
-                                <div>
-                                    <span class="block text-2xl font-bold text-blue-400" id="avgGoals">0</span>
-                                    <span class="text-gray-300">Avg/Game</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Standings Section -->
-    <section id="standings" class="hidden-section pt-24 min-h-screen px-4 pb-12">
-        <div class="container mx-auto max-w-5xl">
-            <div class="glass-panel rounded-2xl p-8 slide-in">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="font-orbitron text-3xl font-bold text-yellow-400 flex items-center gap-2">
-                        Tournament Standings
-               
+                            <
