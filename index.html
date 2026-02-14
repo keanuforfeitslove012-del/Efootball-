@@ -64,6 +64,8 @@
             align-items: center;
         }
         .modal img { max-width: 95%; max-height: 95%; border: 3px solid #ffd700; }
+        .match-item { transition: all 0.3s; }
+        .match-item:hover { transform: translateX(5px); }
     </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -72,7 +74,7 @@
     <div class="fixed top-0 w-full z-50 glass border-b border-yellow-500/30 px-4 py-3 flex justify-between items-center">
         <h1 class="font-orbitron text-xl font-bold text-yellow-400">EFOOTBALL<span class="text-white">2024</span></h1>
         <div class="flex items-center gap-4 text-xs">
-            <span class="glass px-3 py-1 rounded text-yellow-400" id="dateDisplay">📅 actual date</span>
+            <span class="glass px-3 py-1 rounded text-yellow-400" id="dateDisplay">📅 Loading...</span>
             <span class="glass px-3 py-1 rounded" id="connStatus">
                 <span id="connDot" class="offline-dot"></span>
                 <span id="connText">Offline</span>
@@ -98,7 +100,7 @@
                 <h2 class="font-orbitron text-3xl font-bold text-yellow-400 mb-2">KONAMIST</h2>
                 <p class="text-gray-300 mb-6">16 Players. Live Tournament.</p>
                 <input type="text" id="username" placeholder="Your username" class="w-full px-4 py-3 rounded bg-black/50 border border-yellow-500/50 text-white text-center mb-4">
-                <button onclick="proceed ()" class="w-full py-3 rounded gold-btn text-lg">PROCEED</button>
+                <button onclick="enter()" class="w-full py-3 rounded gold-btn text-lg">ENTER</button>
             </div>
         </div>
 
@@ -126,7 +128,7 @@
                         <button onclick="register()" class="w-full py-3 rounded bg-purple-600 hover:bg-purple-500 font-bold">REGISTER</button>
                     </div>
                     <div>
-                        <p class="text-yellow-400 font-bold mb-2">Players: <span id="pCount">0</span></p>
+                        <p class="text-yellow-400 font-bold mb-2">Players: <span id="pCount">0</span>/16</p>
                         <div id="pList" class="space-y-2 max-h-64 overflow-y-auto text-sm"></div>
                     </div>
                 </div>
@@ -140,10 +142,11 @@
                         <div class="text-center">
                             <div class="text-5xl mb-2" id="spinIcon">🎲</div>
                             <p class="font-bold text-xl">SPIN</p>
+                            <p class="text-xs mt-2 text-gray-300">Click to generate matches</p>
                         </div>
                     </div>
                     <div>
-                        <p class="text-yellow-400 font-bold mb-2">Matches</p>
+                        <p class="text-yellow-400 font-bold mb-2">Generated Matches</p>
                         <div id="mList" class="space-y-2 max-h-48 overflow-y-auto text-sm"></div>
                     </div>
                 </div>
@@ -156,20 +159,26 @@
                 </h3>
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="space-y-3">
-                        <select id="s1" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white"></select>
-                        <div class="flex gap-2">
-                            <input type="number" id="sg1" placeholder="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
-                            <input type="number" id="sg2" placeholder="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
+                        <select id="s1" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
+                            <option value="">Select Player 1</option>
+                        </select>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" id="sg1" placeholder="0" min="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
+                            <span class="text-yellow-400 font-bold">VS</span>
+                            <input type="number" id="sg2" placeholder="0" min="0" class="w-1/2 px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white text-center text-2xl font-bold">
                         </div>
-                        <select id="s2" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white"></select>
-                        <input type="file" id="ss" accept="image/*" onchange="preview(this)" class="w-full text-sm text-white">
+                        <select id="s2" class="w-full px-4 py-3 rounded bg-black/50 border border-blue-500/50 text-white">
+                            <option value="">Select Player 2</option>
+                        </select>
+                        <input type="file" id="ss" accept="image/*" onchange="preview(this)" class="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                         <div id="sPreview" class="hidden">
                             <img id="sImg" class="h-24 border-2 border-yellow-500 rounded cursor-pointer" onclick="openModal(this.src)">
+                            <button onclick="clearImage()" class="text-xs text-red-400 mt-1">Remove image</button>
                         </div>
-                        <button onclick="submit()" class="w-full py-3 rounded bg-red-600 hover:bg-red-500 font-bold">SUBMIT</button>
+                        <button onclick="submit()" class="w-full py-3 rounded bg-red-600 hover:bg-red-500 font-bold">SUBMIT RESULT</button>
                     </div>
                     <div>
-                        <p class="text-yellow-400 font-bold mb-2">Recent</p>
+                        <p class="text-yellow-400 font-bold mb-2">Recent Results</p>
                         <div id="rList" class="space-y-2 max-h-48 overflow-y-auto text-sm"></div>
                         <div class="mt-3 p-3 bg-blue-900/50 rounded flex justify-around text-center">
                             <div><span class="block text-xl font-bold text-green-400" id="statM">0</span>Matches</div>
@@ -185,7 +194,7 @@
                     <h3 class="font-orbitron text-xl text-yellow-400 flex items-center gap-2">
                         <span class="live-dot"></span> STANDINGS
                     </h3>
-                    <button onclick="reset()" class="px-3 py-1 bg-red-800 rounded text-xs font-bold">RESET</button>
+                    <button onclick="reset()" class="px-3 py-1 bg-red-800 hover:bg-red-700 rounded text-xs font-bold">RESET ALL DATA</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
@@ -213,7 +222,7 @@
 
     <script>
         // ==========================================
-        // FIREBASE SETUP - WORKING DATABASE
+        // FIREBASE SETUP
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDuH7ys0aEeYUYeD8dvJ8J4z2uQ4u3x4y5",
@@ -230,16 +239,29 @@
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             connected = true;
-        } catch(e) { console.log("Firebase init failed:", e); }
+            console.log("Firebase connected successfully");
+        } catch(e) { 
+            console.log("Firebase init failed:", e);
+            alert("Warning: Could not connect to live database. Using local storage only.");
+        }
 
-        // Data
-        let user = '', players = [], matches = [], table = [];
+        // Data with localStorage backup
+        let user = localStorage.getItem('efootball_user') || '';
+        let players = JSON.parse(localStorage.getItem('efootball_players') || '[]');
+        let matches = JSON.parse(localStorage.getItem('efootball_matches') || '[]');
+        let table = JSON.parse(localStorage.getItem('efootball_table') || '[]');
         let audio = null;
 
         // ==========================================
         // UTILITIES
         // ==========================================
         function $(id) { return document.getElementById(id); }
+
+        function saveLocal() {
+            localStorage.setItem('efootball_players', JSON.stringify(players));
+            localStorage.setItem('efootball_matches', JSON.stringify(matches));
+            localStorage.setItem('efootball_table', JSON.stringify(table));
+        }
 
         function updateDate() {
             const d = new Date();
@@ -259,10 +281,14 @@
                 audio = new Audio('me-and-u-tems.mp3');
                 audio.loop = true;
             }
-            audio.play().then(() => {
-                $('musicBtn').textContent = '⏸';
-                $('musicBtn').onclick = () => { audio.pause(); $('musicBtn').textContent = '🎵'; $('musicBtn').onclick = playMusic; };
-            }).catch(() => alert('Add "me-and-u-tems.mp3" file'));
+            if (audio.paused) {
+                audio.play().then(() => {
+                    $('musicBtn').textContent = '⏸';
+                }).catch(() => alert('Add "me-and-u-tems.mp3" file to play music'));
+            } else {
+                audio.pause();
+                $('musicBtn').textContent = '🎵';
+            }
         }
 
         function openModal(src) { $('modalImg').src = src; $('modal').style.display = 'flex'; }
@@ -271,9 +297,17 @@
         function preview(input) {
             if (input.files[0]) {
                 const r = new FileReader();
-                r.onload = (e) => { $('sImg').src = e.target.result; $('sPreview').classList.remove('hidden'); };
+                r.onload = (e) => { 
+                    $('sImg').src = e.target.result; 
+                    $('sPreview').classList.remove('hidden'); 
+                };
                 r.readAsDataURL(input.files[0]);
             }
+        }
+
+        function clearImage() {
+            $('ss').value = '';
+            $('sPreview').classList.add('hidden');
         }
 
         // ==========================================
@@ -283,14 +317,56 @@
             const n = $('username').value.trim();
             if (!n) return alert('Enter username!');
             user = n;
+            localStorage.setItem('efootball_user', user);
             $('welcome').classList.add('hidden');
             $('dashboard').classList.remove('hidden');
             show('register');
+            initFirebaseListeners();
         }
 
         function show(section) {
             ['register','lootbox','results','standings'].forEach(s => $(s).classList.add('hidden'));
             $(section).classList.remove('hidden');
+            if (section === 'standings') updateStandings();
+            if (section === 'results') updateStats();
+        }
+
+        // ==========================================
+        // FIREBASE LISTENERS (Real-time sync)
+        // ==========================================
+        function initFirebaseListeners() {
+            if (!connected) return;
+            
+            // Listen for players
+            db.ref('players').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    players = Object.values(data);
+                    saveLocal();
+                    updatePlayers();
+                }
+            });
+
+            // Listen for matches
+            db.ref('matches').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    matches = Object.values(data).sort((a,b) => b.id - a.id);
+                    saveLocal();
+                    updateMatches();
+                    updateStats();
+                }
+            });
+
+            // Listen for table
+            db.ref('table').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    table = Object.values(data);
+                    saveLocal();
+                    updateStandings();
+                }
+            });
         }
 
         // ==========================================
@@ -302,119 +378,50 @@
             const fav = $('rFav').value.trim();
             
             if (!name || !str || !fav) return alert('Fill all fields!');
+            if (players.length >= 16) return alert('Tournament full (16 players max)!');
             if (players.find(p => p.name.toLowerCase() === name.toLowerCase())) return alert('Name taken!');
 
-            const p = { id: Date.now(), name, str, fav, user: user || 'Guest', time: new Date().toLocaleString() };
+            const p = { 
+                id: Date.now(), 
+                name, 
+                str, 
+                fav, 
+                user: user || 'Guest', 
+                time: new Date().toLocaleString() 
+            };
             
+            // Save to Firebase
             if (connected) {
-                db.ref('players/' + p.id).set(p);
-                db.ref('table/' + name).set({name, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0});
+                db.ref('players/' + p.id).set(p).catch(e => console.error("Firebase error:", e));
+                db.ref('table/' + name).set({
+                    name, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0
+                });
             }
             
-            $('rName').value = ''; $('rStr').value = ''; $('rFav').value = '';
+            // Local backup
+            players.push(p);
+            saveLocal();
+            updatePlayers();
+            
+            // Clear form
+            $('rName').value = ''; 
+            $('rStr').value = ''; 
+            $('rFav').value = '';
+            
+            alert(`Player ${name} registered successfully!`);
         }
 
         function updatePlayers() {
             $('pCount').textContent = players.length;
             $('pList').innerHTML = players.map(p => `
-                <div class="bg-blue-900/30 p-2 rounded flex justify-between">
-                    <span class="text-yellow-400 font-bold">${p.name}</span>
+                <div class="bg-blue-900/30 p-2 rounded flex justify-between items-center">
+                    <div>
+                        <span class="text-yellow-400 font-bold">${p.name}</span>
+                        <span class="text-xs text-gray-400 ml-2">by ${p.user}</span>
+                    </div>
                     <span class="text-sm">${p.str}</span>
                 </div>
-            `).join('') || '<p class="text-gray-400 italic">No players</p>';
+            `).join('') || '<p class="text-gray-400 italic">No players registered yet</p>';
             
-            const opts = players.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
-            $('s1').innerHTML = '<option>Select Player 1</option>' + opts;
-            $('s2').innerHTML = '<option>Select Player 2</option>' + opts;
-        }
-
-        // ==========================================
-        // LOOT BOX
-        // ==========================================
-        function spin() {
-            if (players.length < 2) return alert('Need 2+ players!');
-            
-            $('spinIcon').textContent = '⚽';
-            $('spinBox').classList.add('spin');
-            
-            setTimeout(() => {
-                $('spinBox').classList.remove('spin');
-                $('spinIcon').textContent = '🎲';
-                
-                const shuffled = [...players].sort(() => Math.random() - 0.5);
-                let html = '';
-                for (let i = 0; i < shuffled.length - 1; i += 2) {
-                    html += `
-                        <div class="vs-box p-3 rounded flex justify-between items-center cursor-pointer hover:bg-blue-800/50" onclick="pick('${shuffled[i].name}','${shuffled[i+1].name}')">
-                            <div class="text-right flex-1 pr-2">
-                                <div class="font-bold text-yellow-400">${shuffled[i].name}</div>
-                                <div class="text-xs">${shuffled[i].str}</div>
-                            </div>
-                            <div class="font-bold text-red-500">VS</div>
-                            <div class="flex-1 pl-2">
-                                <div class="font-bold text-yellow-400">${shuffled[i+1].name}</div>
-                                <div class="text-xs">${shuffled[i+1].str}</div>
-                            </div>
-                        </div>
-                    `;
-                }
-                $('mList').innerHTML = html;
-            }, 1000);
-        }
-
-        function pick(a, b) {
-            show('results');
-            $('s1').value = a;
-            $('s2').value = b;
-        }
-
-        // ==========================================
-        // RESULTS
-        // ==========================================
-        function submit() {
-            const p1 = $('s1').value;
-            const p2 = $('s2').value;
-            const g1 = parseInt($('sg1').value) || 0;
-            const g2 = parseInt($('sg2').value) || 0;
-            const file = $('ss').files[0];
-            
-            if (!p1 || !p2 || p1 === p2) return alert('Select 2 different players!');
-            
-            const save = (img) => {
-                const r = { id: Date.now(), p1, p2, g1, g2, img, hasImg: !!img, by: user, time: new Date().toLocaleString() };
-                if (connected) {
-                    db.ref('matches/' + r.id).set(r);
-                    updateTable(p1, p2, g1, g2);
-                }
-                $('s1').selectedIndex = 0; $('s2').selectedIndex = 0;
-                $('sg1').value = ''; $('sg2').value = ''; $('ss').value = '';
-                $('sPreview').classList.add('hidden');
-            };
-            
-            if (file) {
-                const r = new FileReader();
-                r.onload = (e) => save(e.target.result);
-                r.readAsDataURL(file);
-            } else {
-                save(null);
-            }
-        }
-
-        function updateTable(p1, p2, g1, g2) {
-            const upd = (name, gf, ga, w, d) => {
-                const ref = db.ref('table/' + name);
-                ref.once('value').then(s => {
-                    let d = s.val() || {name, p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0};
-                    d.p++; d.gf += gf; d.ga += ga;
-                    if (w) { d.w++; d.pts += 3; }
-                    else if (d) { d.d++; d.pts += 1; }
-                    else { d.l++; }
-                    ref.set(d);
-                });
-            };
-            upd(p1, g1, g2, g1 > g2, g1 === g2);
-            upd(p2, g2, g1, g2 > g1, g1 === g2);
-        }
-
-        function updateMatches() {
-            $('rList').innerHTML = matches.slice
+            // Update dropdowns
+            const opts = players.map(p => `<opt
