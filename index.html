@@ -3,135 +3,367 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>eFootball 2026 Tournament</title>
+<title>DOOMSDAY TOURNAMENT 2026</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
-body{background:url('https://kimi-web-img.moonshot.cn/img/images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/1eb6b82c6d1bc5db3fe29e12f549d8793503a6c2.png') center/cover fixed #000;color:#fff;min-height:100vh}
-.overlay{background:rgba(0,0,0,.85);min-height:100vh;padding:20px}
-.container{max-width:1200px;margin:0 auto}
-h1{text-align:center;font-size:2.5em;margin-bottom:10px;text-shadow:0 0 20px #0ff;background:linear-gradient(90deg,#0ff,#f0f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border-radius:15px;padding:20px;margin:15px 0;border:1px solid rgba(255,255,255,.2)}
-input,select,button{width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
-input::placeholder{color:#aaa}
-button{background:linear-gradient(45deg,#00d4ff,#7b2cbf);cursor:pointer;font-weight:bold;transition:.3s}
-button:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(0,212,255,.5)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Impact','Arial Black',sans-serif}
+body{background:url('https://kimi-web-img.moonshot.cn/img/images5.alphacoders.com/7330b86c73698afcbf02f97bd73ea3d4ad272e5b.jpeg') center/cover fixed #000;color:#fff;min-height:100vh;text-transform:uppercase}
+.overlay{background:rgba(0,0,0,.9);min-height:100vh;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{text-align:center;font-size:3em;margin-bottom:10px;text-shadow:0 0 30px #ff0000;background:linear-gradient(180deg,#ff0000,#8b0000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px}
+.nav{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;position:sticky;top:0;z-index:100;background:rgba(0,0,0,.8);padding:10px;border-radius:10px;border:2px solid #ff0000}
+.nav button{width:auto;padding:12px 25px;background:linear-gradient(45deg,#8b0000,#ff0000);border:2px solid #000;font-size:1.1em;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%)}
+.nav button:hover{background:#ff0000;transform:scale(1.1)}
+.nav button.active{background:#ffd700;color:#000}
+.card{background:rgba(139,0,0,.3);backdrop-filter:blur(10px);border-radius:5px;padding:20px;margin:15px 0;border:3px solid #ff0000;box-shadow:0 0 20px rgba(255,0,0,.5);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#ff0000,transparent)}
+input,select,button{width:100%;padding:15px;margin:10px 0;border:2px solid #ff0000;background:rgba(0,0,0,.8);color:#fff;font-size:1.1em;clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
+input::placeholder{color:#888}
+button{cursor:pointer;transition:.3s;text-transform:uppercase;font-weight:bold}
+button:hover{background:#ff0000;box-shadow:0 0 30px #ff0000}
 .hidden{display:none !important}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.2)}
-th{background:rgba(0,212,255,.3)}
-tr:hover{background:rgba(255,255,255,.05)}
-.lootbox{width:200px;height:200px;margin:20px auto;background:linear-gradient(45deg,#ffd700,#ff6b6b);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:3em;cursor:pointer;transition:.3s;box-shadow:0 0 30px rgba(255,215,0,.5);position:relative;overflow:hidden}
-.lootbox.spin{animation:spin .5s linear infinite}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-.winner{background:linear-gradient(45deg,#00ff88,#00d4ff) !important;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.nav{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
-.nav button{width:auto;padding:10px 20px}
-.match{display:flex;justify-content:space-between;align-items:center;padding:15px;background:rgba(255,255,255,.05);border-radius:10px;margin:10px 0}
-.vs{font-size:2em;font-weight:bold;color:#ffd700}
-.upload-area{border:2px dashed rgba(255,255,255,.3);padding:20px;text-align:center;border-radius:10px;cursor:pointer;transition:.3s}
-.upload-area:hover{border-color:#00d4ff;background:rgba(0,212,255,.1)}
-#liveFeed{max-height:300px;overflow-y:auto}
-.feed-item{padding:10px;border-left:3px solid #00d4ff;margin:5px 0;background:rgba(255,255,255,.05);animation:slideIn .3s}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}}
-.badge{display:inline-block;padding:4px 8px;border-radius:12px;font-size:.8em;background:#00d4ff;color:#000;margin-left:5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+table{width:100%;border-collapse:collapse;font-size:.9em}
+th,td{padding:15px;text-align:center;border:2px solid #8b0000}
+th{background:linear-gradient(180deg,#8b0000,#000);color:#ffd700}
+tr:nth-child(odd){background:rgba(139,0,0,.2)}
+tr:hover{background:rgba(255,0,0,.3)}
+.pos1{background:linear-gradient(90deg,#ffd700,#ffed4e);color:#000;font-weight:bold}
+.pos2{background:linear-gradient(90deg,#c0c0c0,#e8e8e8);color:#000}
+.pos3{background:linear-gradient(90deg,#cd7f32,#daa520);color:#000}
+.lootbox{width:250px;height:250px;margin:30px auto;background:radial-gradient(circle,#8b0000,#000);border:5px solid #ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:4em;cursor:pointer;transition:.3s;box-shadow:0 0 50px #ff0000;position:relative}
+.lootbox.spin{animation:doomSpin .5s linear infinite}
+@keyframes doomSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
+.lootbox.doom{background:radial-gradient(circle,#ff0000,#8b0000);animation:doomPulse 1s infinite}
+@keyframes doomPulse{0%,100%{box-shadow:0 0 50px #ff0000}50%{box-shadow:0 0 100px #ff0000}}
+.match{display:flex;justify-content:space-between;align-items:center;padding:20px;background:rgba(0,0,0,.8);border:3px solid #ff0000;margin:15px 0;clip-path:polygon(3% 0,100% 0,97% 100%,0 100%)}
+.vs{font-size:3em;font-weight:bold;color:#ffd700;text-shadow:0 0 20px #ff0000}
+.upload-area{border:3px dashed #ff0000;padding:30px;text-align:center;cursor:pointer;transition:.3s;background:rgba(139,0,0,.2)}
+.upload-area:hover{border-color:#ffd700;background:rgba(255,215,0,.1)}
+#liveFeed,#galleryGrid{max-height:400px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
+.feed-item{padding:15px;border-left:5px solid #ff0000;background:rgba(0,0,0,.8);animation:doomIn .5s;clip-path:polygon(0 0,100% 0,95% 100%,0 100%)}
+@keyframes doomIn{from{opacity:0;transform:translateX(-50px)}}
+.online{display:inline-block;width:12px;height:12px;background:#00ff00;border-radius:50%;margin-right:8px;box-shadow:0 0 10px #00ff00;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.offline{background:#ff0000;box-shadow:0 0 10px #ff0000}
+.badge{display:inline-block;padding:5px 10px;background:#ff0000;color:#fff;font-size:.8em;margin-left:5px;clip-path:polygon(15% 0,100% 0,85% 100%,0 100%)}
+.div-tag{background:#ffd700;color:#000;padding:3px 8px;font-size:.7em;clip-path:polygon(20% 0,100% 0,80% 100%,0 100%)}
+.gallery-item{position:relative;border:3px solid #ff0000;overflow:hidden;cursor:pointer;transition:.3s}
+.gallery-item:hover{transform:scale(1.05);z-index:10;box-shadow:0 0 30px #ff0000}
+.gallery-item img{width:100%;height:200px;object-fit:cover}
+.gallery-item .info{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);padding:10px;font-size:.8em;border-top:2px solid #ff0000}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.stat-box{background:rgba(139,0,0,.5);padding:15px;text-align:center;border:2px solid #ff0000;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%)}
+.stat-box h3{color:#ffd700;font-size:2em}
+#onlineList{position:fixed;top:80px;right:20px;background:rgba(0,0,0,.9);border:3px solid #ff0000;padding:15px;border-radius:5px;max-width:200px;z-index:99;box-shadow:0 0 20px #ff0000}
+#onlineList h4{color:#ffd700;margin-bottom:10px;border-bottom:2px solid #ff0000;padding-bottom:5px}
+.player-status{padding:5px 0;font-size:.9em;display:flex;align-items:center}
+.music-btn{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:#ff0000;border:3px solid #ffd700;font-size:1.5em;z-index:100;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}70%{box-shadow:0 0 0 20px rgba(255,0,0,0)}}
+.cracked{text-decoration:line-through;text-decoration-color:#ff0000;text-decoration-thickness:3px}
 </style>
 </head>
 <body>
 <div class="overlay">
 <div class="container">
-<h1>⚽ eFootball 2026 Tournament</h1>
+<h1>☠️ DOOMSDAY TOURNAMENT ☠️</h1>
+<h3 style="text-align:center;color:#ff0000;margin-bottom:20px">eFootball 2026 - The Death of Competition</h3>
+
+<div class="nav" id="mainNav" style="display:none">
+<button onclick="showTab('home')" id="nav-home">🏠 Home</button>
+<button onclick="showTab('loot')" id="nav-loot">🎲 Battle</button>
+<button onclick="showTab('table')" id="nav-table">⚔️ Rankings</button>
+<button onclick="showTab('upload')" id="nav-upload">📸 Submit War</button>
+<button onclick="showTab('gallery')" id="nav-gallery">💀 Memories</button>
+<button onclick="showTab('live')" id="nav-live">🔴 Live</button>
+<button onclick="logout()" style="background:#000;color:#ff0000">🚪 Exit</button>
+</div>
 
 <div id="login" class="card">
-<h2>👋 Welcome Coach!</h2>
-<input type="text" id="username" placeholder="Enter Username" required>
-<input type="text" id="coach" placeholder="Coach Name" required>
-<input type="number" id="strength" placeholder="Team Strength (Any Number)" required>
-<input type="text" id="player" placeholder="Favorite Player" required>
+<h2 style="color:#ff0000;text-align:center;margin-bottom:20px">Enter The Arena</h2>
+<div class="grid">
+<div>
+<input type="text" id="username" placeholder="Warrior Name" required>
+<input type="text" id="coach" placeholder="Coach Title" required>
+<input type="number" id="strength" placeholder="Team Strength (No Limit)" required>
+</div>
+<div>
+<input type="text" id="player" placeholder="Champion Player" required>
 <select id="division" required>
-<option value="">Select Division</option>
-<option value="1">Division 1</option>
-<option value="2">Division 2</option>
-<option value="3">Division 3</option>
-<option value="4">Division 4</option>
-<option value="5">Division 5</option>
-<option value="6">Division 6</option>
-<option value="7">Division 7</option>
-<option value="8">Division 8</option>
-<option value="9">Division 9</option>
+<option value="">Select Division (1-9)</option>
+<option value="1">Division 1 - GOD TIER</option>
+<option value="2">Division 2 - ELITE</option>
+<option value="3">Division 3 - MASTER</option>
+<option value="4">Division 4 - DIAMOND</option>
+<option value="5">Division 5 - PLATINUM</option>
+<option value="6">Division 6 - GOLD</option>
+<option value="7">Division 7 - SILVER</option>
+<option value="8">Division 8 - BRONZE</option>
+<option value="9">Division 9 - ROOKIE</option>
 </select>
-<button onclick="register()">Enter Tournament</button>
+<button onclick="register()" style="background:#ff0000;font-size:1.3em">ENTER COMBAT</button>
+</div>
+</div>
 </div>
 
 <div id="dashboard" class="hidden">
-<div class="nav">
-<button onclick="showTab('loot')">🎲 Matchmaking</button>
-<button onclick="showTab('table')">📊 League Table</button>
-<button onclick="showTab('upload')">📸 Upload Result</button>
-<button onclick="showTab('live')">🔴 Live Updates</button>
+<div id="onlineList">
+<h4>⚡ WARRIORS ONLINE</h4>
+<div id="onlineUsers"></div>
+<small style="color:#888;display:block;margin-top:10px">Updates every 10s</small>
 </div>
 
-<div id="loot" class="card">
-<h2>🎲 Loot Box Matchmaking</h2>
-<p style="text-align:center">Click to spin and find your opponent!</p>
-<div class="lootbox" id="box" onclick="spinBox()">🎲</div>
-<div id="matchResult" style="text-align:center;margin-top:20px"></div>
+<div id="home" class="card">
+<h2 style="color:#ffd700">Welcome Back, <span id="welcomeName"></span></h2>
+<div class="stats">
+<div class="stat-box"><h3 id="statDiv">-</h3><div>Division</div></div>
+<div class="stat-box"><h3 id="statStr">-</h3><div>Strength</div></div>
+<div class="stat-box"><h3 id="statRank">-</h3><div>Rank</div></div>
+<div class="stat-box"><h3 id="statPts">0</h3><div>Points</div></div>
+</div>
+<p style="text-align:center;color:#ff0000;font-size:1.2em">"The only thing that matters is who stands at the end."</p>
+</div>
+
+<div id="loot" class="card hidden">
+<h2 style="text-align:center;color:#ff0000">☠️ The Doomsday Draw ☠️</h2>
+<p style="text-align:center;margin-bottom:20px">Click the blood moon to summon your opponent...</p>
+<div class="lootbox" id="box" onclick="spinBox()">☠️</div>
+<div id="matchResult" style="text-align:center;margin-top:30px;font-size:1.3em"></div>
 </div>
 
 <div id="table" class="card hidden">
-<h2>📊 Tournament Standings</h2>
+<h2 style="color:#ffd700">⚔️ Tournament of Death Standings ⚔️</h2>
 <table>
-<thead><tr><th>Pos</th><th>Coach</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
+<thead><tr><th>Rank</th><th>Warrior</th><th>Div</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
 <tbody id="standings"></tbody>
 </table>
 </div>
 
 <div id="upload" class="card hidden">
-<h2>📸 Upload Match Result</h2>
+<h2 style="color:#ff0000">📸 Submit Battle Result</h2>
 <div class="grid">
 <div>
-<input type="text" id="p1" placeholder="Player 1" required>
-<input type="text" id="p2" placeholder="Player 2" required>
-<input type="number" id="s1" placeholder="Score 1" required>
-<input type="number" id="s2" placeholder="Score 2" required>
+<input type="text" id="p1" placeholder="Your Name" readonly style="background:#333">
+<input type="text" id="p2" placeholder="Opponent Name" required>
+<div style="display:flex;gap:10px">
+<input type="number" id="s1" placeholder="Your Score" required style="flex:1">
+<input type="number" id="s2" placeholder="Their Score" required style="flex:1">
+</div>
+<input type="datetime-local" id="matchTime" required>
 </div>
 <div>
 <div class="upload-area" onclick="document.getElementById('ss').click()">
-<p>📷 Click to upload Screenshot</p>
+<p style="font-size:1.2em">📷 CLICK TO UPLOAD EVIDENCE</p>
+<p style="color:#888;font-size:.9em">Screenshot must match scores</p>
 <input type="file" id="ss" accept="image/*" style="display:none" onchange="preview(this)">
-<img id="preview" style="max-width:100%;margin-top:10px;display:none;border-radius:8px">
+<img id="preview" style="max-width:100%;margin-top:10px;display:none;border:3px solid #ff0000">
 </div>
 </div>
 </div>
-<button onclick="submitMatch()">Submit Result</button>
+<button onclick="submitMatch()" style="background:#ff0000;font-size:1.2em;margin-top:20px">SUBMIT TO ARCHIVES</button>
+</div>
+
+<div id="gallery" class="card hidden">
+<h2 style="color:#ffd700;text-align:center">💀 THE MEMORIES WE HAVE MADE 💀</h2>
+<p style="text-align:center;color:#888;margin-bottom:20px">Proof of battles fought and won...</p>
+<div id="galleryGrid"></div>
 </div>
 
 <div id="live" class="card hidden">
-<h2>🔴 Live Tournament Feed</h2>
-<div id="liveFeed"></div>
+<h2 style="color:#00ff00">🔴 LIVE BATTLE FEED</h2>
+<div id="liveFeed" style="display:block"></div>
 </div>
 </div>
 
 <audio id="bgMusic" loop>
 <source src="tems-me-and-u.mp3" type="audio/mpeg">
 </audio>
-<button onclick="toggleMusic()" style="position:fixed;bottom:20px;right:20px;width:auto;border-radius:50%;width:50px;height:50px">🎵</button>
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
 </div>
 </div>
 
 <script>
-const db={players:[],matches:[],feed:[]};
+const DB={players:[],matches:[],gallery:[],feed:[]};
 let currentUser=null,spinning=false;
-function register(){const u=document.getElementById('username').value,c=document.getElementById('coach').value,s=document.getElementById('strength').value,p=document.getElementById('player').value,d=document.getElementById('division').value;if(!u||!c||!s||!p||!d)return alert('Fill all fields!');currentUser={u,c,s,p,d,w:0,pl:0,pts:0,gf:0,ga:0,gd:0};db.players.push(currentUser);document.getElementById('login').classList.add('hidden');document.getElementById('dashboard').classList.remove('hidden');addFeed(`🎉 ${c} joined Division ${d}!`);updateTable();}
-function showTab(t){['loot','table','upload','live'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(t).classList.remove('hidden');if(t==='table')updateTable();}
-function spinBox(){if(spinning||db.players.length<2)return;spinning=true;const b=document.getElementById('box'),m=document.getElementById('matchResult');b.classList.add('spin');m.innerHTML='Spinning...';setTimeout(()=>{b.classList.remove('spin');const o=db.players.filter(x=>x.u!==currentUser.u);const r=o[Math.floor(Math.random()*o.length)];m.innerHTML=`<div class="match"><span>${currentUser.c}</span><span class="vs">VS</span><span>${r.c}</span></div><p>Division ${currentUser.d} vs Division ${r.d}</p>`;b.classList.add('winner');setTimeout(()=>b.classList.remove('winner'),2000);spinning=false;},2000);}
-function updateTable(){const t=document.getElementById('standings');t.innerHTML=db.players.sort((a,b)=>b.pts-a.pts||b.gd-a.gd).map((p,i)=>`<tr><td>${i+1}</td><td>${p.c}<span class="badge">Div ${p.d}</span></td><td>${p.pl}</td><td>${p.w}</td><td>${p.pl-p.w-Math.abs(p.pl-p.w)}</td><td>${Math.abs(p.pl-p.w-(p.pl-p.w-Math.abs(p.pl-p.w)))}</td><td>${p.gf}</td><td>${p.ga}</td><td>${p.gd>0?'+':''}${p.gd}</td><td><b>${p.pts}</b></td></tr>`).join('');}
-function preview(i){const f=i.files[0];if(f){const r=new FileReader();r.onload=e=>{document.getElementById('preview').src=e.target.result;document.getElementById('preview').style.display='block'};r.readAsDataURL(f);}}
-function submitMatch(){const p1=document.getElementById('p1').value,p2=document.getElementById('p2').value,s1=parseInt(document.getElementById('s1').value),s2=parseInt(document.getElementById('s2').value);if(!p1||!p2||isNaN(s1)||isNaN(s2))return alert('Fill all scores!');const u1=db.players.find(x=>x.c===p1),u2=db.players.find(x=>x.c===p2);if(!u1||!u2)return alert('Players not found!');u1.pl++;u2.pl++;u1.gf+=s1;u1.ga+=s2;u2.gf+=s2;u2.ga+=s1;u1.gd=u1.gf-u1.ga;u2.gd=u2.gf-u2.ga;if(s1>s2){u1.w++;u1.pts+=3;addFeed(`⚽ ${p1} beat ${p2} ${s1}-${s2}!`);}else if(s2>s1){u2.w++;u2.pts+=3;addFeed(`⚽ ${p2} beat ${p1} ${s2}-${s1}!`);}else{u1.pts++;u2.pts++;addFeed(`🤝 ${p1} drew with ${p2} ${s1}-${s2}`);}updateTable();showTab('table');}
-function addFeed(m){const time=new Date().toLocaleTimeString();db.feed.unshift({t:time,m});document.getElementById('liveFeed').innerHTML=db.feed.map(x=>`<div class="feed-item"><small>${x.t}</small><br>${x.m}</div>`).join('');}
+
+function init(){
+const saved=localStorage.getItem('doomsdayDB');
+const user=localStorage.getItem('currentUser');
+if(saved){
+const data=JSON.parse(saved);
+DB.players=data.players||[];
+DB.matches=data.matches||[];
+DB.gallery=data.gallery||[];
+DB.feed=data.feed||[];
+}
+if(user){
+currentUser=JSON.parse(user);
+showDashboard();
+}
+updateOnline();
+setInterval(updateOnline,10000);
+setInterval(simulateActivity,30000);
+}
+
+function saveDB(){
+localStorage.setItem('doomsdayDB',JSON.stringify(DB));
+if(currentUser)localStorage.setItem('currentUser',JSON.stringify(currentUser));
+}
+
+function register(){
+const u=document.getElementById('username').value,c=document.getElementById('coach').value,s=parseInt(document.getElementById('strength').value),p=document.getElementById('player').value,d=document.getElementById('division').value;
+if(!u||!c||!s||!p||!d)return alert('FILL ALL FIELDS TO ENTER!');
+const exists=DB.players.find(x=>x.u===u);
+if(exists){
+currentUser=exists;
+saveDB();
+showDashboard();
+return;
+}
+currentUser={u,c,s,p,d:parseInt(d),pl:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0,lastActive:Date.now()};
+DB.players.push(currentUser);
+saveDB();
+showDashboard();
+addFeed(`☠️ ${c} has entered Division ${d}!`,true);
+}
+
+function showDashboard(){
+document.getElementById('login').classList.add('hidden');
+document.getElementById('dashboard').classList.remove('hidden');
+document.getElementById('mainNav').style.display='flex';
+document.getElementById('welcomeName').textContent=currentUser.c;
+document.getElementById('p1').value=currentUser.c;
+document.getElementById('statDiv').textContent=currentUser.d;
+document.getElementById('statStr').textContent=currentUser.s;
+document.getElementById('statPts').textContent=currentUser.pts;
+updateRank();
+showTab('home');
+updateTable();
+updateGallery();
+}
+
+function updateRank(){
+const sorted=DB.players.sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
+const idx=sorted.findIndex(x=>x.u===currentUser.u);
+document.getElementById('statRank').textContent=idx>=0?'#'+(idx+1):'-';
+}
+
+function showTab(t){
+['home','loot','table','upload','gallery','live'].forEach(x=>{
+document.getElementById(x).classList.add('hidden');
+document.getElementById('nav-'+x)?.classList.remove('active');
+});
+document.getElementById(t).classList.remove('hidden');
+document.getElementById('nav-'+t)?.classList.add('active');
+if(t==='table')updateTable();
+if(t==='gallery')updateGallery();
+}
+
+function spinBox(){
+if(spinning||DB.players.length<2)return;
+spinning=true;
+const b=document.getElementById('box'),m=document.getElementById('matchResult');
+b.classList.add('spin');
+m.innerHTML='<p style="color:#ff0000;font-size:1.5em">SUMMONING...</p>';
+setTimeout(()=>{
+b.classList.remove('spin');
+const enemies=DB.players.filter(x=>x.u!==currentUser.u);
+const doom=enemies[Math.floor(Math.random()*enemies.length)];
+m.innerHTML=`<div class="match"><div><div class="badge">YOU</div><h3>${currentUser.c}</h3><small>Div ${currentUser.d} | STR ${currentUser.s}</small></div><div class="vs">VS</div><div><div class="badge" style="background:#8b0000">ENEMY</div><h3>${doom.c}</h3><small>Div ${doom.d} | STR ${doom.s}</small></div></div><button onclick="document.getElementById('p2').value='${doom.c}';showTab('upload')" style="margin-top:20px;background:#ffd700;color:#000">RECORD BATTLE RESULT</button>`;
+b.classList.add('doom');
+setTimeout(()=>b.classList.remove('doom'),3000);
+spinning=false;
+},2000);
+}
+
+function updateTable(){
+const sorted=DB.players.sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
+document.getElementById('standings').innerHTML=sorted.map((p,i)=>{
+const cls=i===0?'pos1':i===1?'pos2':i===2?'pos3':'';
+return`<tr class="${cls}"><td>${i+1}</td><td>${p.c}${p.u===currentUser?.u?' <span class="online"></span>':''}</td><td><span class="div-tag">D${p.d}</span></td><td>${p.pl}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gf}</td><td>${p.ga}</td><td style="color:${p.gd>0?'#0f0':p.gd<0?'#f00':'#fff'}">${p.gd>0?'+':''}${p.gd}</td><td style="font-size:1.2em;color:#ffd700">${p.pts}</td></tr>`;
+}).join('');
+}
+
+function preview(i){
+const f=i.files[0];
+if(f){
+const r=new FileReader();
+r.onload=e=>{
+document.getElementById('preview').src=e.target.result;
+document.getElementById('preview').style.display='block';
+};
+r.readAsDataURL(f);
+}
+}
+
+function submitMatch(){
+const p1=document.getElementById('p1').value,p2=document.getElementById('p2').value,s1=parseInt(document.getElementById('s1').value),s2=parseInt(document.getElementById('s2').value),t=document.getElementById('matchTime').value,img=document.getElementById('preview').src;
+if(!p1||!p2||isNaN(s1)||isNaN(s2)||!t)return alert('COMPLETE ALL BATTLE DATA!');
+if(!img||img==='')return alert('UPLOAD SCREENSHOT EVIDENCE!');
+const u1=DB.players.find(x=>x.c===p1),u2=DB.players.find(x=>x.c===p2);
+if(!u1||!u2)return alert('WARRIOR NOT FOUND!');
+u1.pl++;u2.pl++;u1.gf+=s1;u1.ga+=s2;u2.gf+=s2;u2.ga+=s1;u1.gd=u1.gf-u1.ga;u2.gd=u2.gf-u2.ga;
+let result;
+if(s1>s2){u1.w++;u1.pts+=3;result=`${p1} DESTROYED ${p2}`;}
+else if(s2>s1){u2.w++;u2.pts+=3;result=`${p2} DEFEATED ${p1}`;}
+else{u1.d++;u2.d++;u1.pts++;u2.pts++;result=`DRAW: ${p1} vs ${p2}`;}
+DB.gallery.push({p1,p2,s1,s2,img,time:t,winner:s1>s2?p1:s2>s1?p2:'Draw',date:Date.now()});
+saveDB();
+addFeed(`⚔️ ${result} ${s1}-${s2}!`,true);
+updateTable();
+updateRank();
+showTab('table');
+document.getElementById('p2').value='';
+document.getElementById('s1').value='';
+document.getElementById('s2').value='';
+document.getElementById('preview').style.display='none';
+}
+
+function updateGallery(){
+const g=document.getElementById('galleryGrid');
+g.innerHTML=DB.gallery.length?DB.gallery.slice().reverse().map(m=>`<div class="gallery-item" onclick="viewMemory('${m.date}')"><img src="${m.img}"><div class="info"><div style="color:${m.winner===m.p1?'#0f0':'#f00'}">${m.p1} ${m.s1} - ${m.s2} ${m.p2}</div><small>${new Date(m.time).toLocaleDateString()}</small></div></div>`).join(''):'<p style="text-align:center;color:#888;grid-column:1/-1">NO MEMORIES RECORDED YET...</p>';
+}
+
+function viewMemory(d){
+const m=DB.gallery.find(x=>x.date==d);
+if(m)alert(`BATTLE DETAILS:\n${m.p1} ${m.s1} - ${m.s2} ${m.p2}\nWinner: ${m.winner}\nDate: ${new Date(m.time).toLocaleString()}`);
+}
+
+function addFeed(m,save=false){
+const time=new Date().toLocaleTimeString();
+const item={t:time,m};
+DB.feed.unshift(item);
+if(DB.feed.length>50)DB.feed.pop();
+if(save)saveDB();
+const f=document.getElementById('liveFeed');
+f.innerHTML=DB.feed.map(x=>`<div class="feed-item"><small style="color:#ff0000">${x.t}</small><div>${x.m}</div></div>`).join('');
+}
+
+function updateOnline(){
+const now=Date.now();
+const online=DB.players.filter(p=>now-p.lastActive<300000);
+document.getElementById('onlineUsers').innerHTML=online.map(p=>`<div class="player-status"><span class="online"></span>${p.c} <span class="div-tag">D${p.d}</span></div>`).join('')||'<div style="color:#666">No warriors online...</div>';
+if(currentUser){
+currentUser.lastActive=now;
+saveDB();
+}
+}
+
+function simulateActivity(){
+if(Math.random()>0.7){
+const msgs=['A new challenger approaches...','The rankings have shifted...','Doomsday draws near...','A battle has concluded...','The tournament hungers for more...'];
+addFeed(`💀 ${msgs[Math.floor(Math.random()*msgs)]}`);
+}
+}
+
+function logout(){
+currentUser=null;
+localStorage.removeItem('currentUser');
+location.reload();
+}
+
 function toggleMusic(){const a=document.getElementById('bgMusic');a.paused?a.play():a.pause();}
-setInterval(()=>{if(Math.random()>0.7)addFeed('💬 Tournament update: '+['New player joined!','Match starting soon','Leaderboard updated','Semi-finals approaching'][Math.floor(Math.random()*4)]);},30000);
+
+window.onload=init;
 </script>
 </body>
-  </html>
+</html>
