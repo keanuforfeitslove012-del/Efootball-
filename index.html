@@ -3,382 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DOOMSDAY TOURNAMENT 2026</title>
+<title>DOOMSDAY 2026</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Impact','Arial Black',sans-serif}
-body{background:url('https://kimi-web-img.moonshot.cn/img/images5.alphacoders.com/7330b86c73698afcbf02f97bd73ea3d4ad272e5b.jpeg') center/cover fixed #000;color:#fff;min-height:100vh;text-transform:uppercase;overflow-x:hidden}
-.overlay{background:rgba(0,0,0,.9);min-height:100vh;padding:20px}
-.container{max-width:1400px;margin:0 auto}
-h1{text-align:center;font-size:2.5em;margin-bottom:10px;text-shadow:0 0 30px #ff0000;background:linear-gradient(180deg,#ff0000,#8b0000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px}
-.nav{display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;position:sticky;top:0;z-index:100;background:rgba(0,0,0,.9);padding:10px;border-radius:5px;border:3px solid #ff0000;box-shadow:0 0 20px #ff0000}
-.nav button{width:auto;padding:10px 20px;background:linear-gradient(45deg,#8b0000,#ff0000);border:2px solid #000;font-size:.9em;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%);transition:.2s}
-.nav button:hover{background:#ff0000;transform:scale(1.1)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Impact,Arial Black,sans-serif}
+body{background:url(https://kimi-web-img.moonshot.cn/img/images5.alphacoders.com/7330b86c73698afcbf02f97bd73ea3d4ad272e5b.jpeg)center/cover fixed #000;color:#fff;min-height:100vh;text-transform:uppercase}
+.overlay{background:rgba(0,0,0,.9);min-height:100vh;padding:10px}
+.container{max-width:1200px;margin:0 auto}
+h1{text-align:center;font-size:2em;text-shadow:0 0 20px #f00;background:linear-gradient(180deg,#f00,#800);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav{display:flex;gap:5px;justify-content:center;margin:10px 0;flex-wrap:wrap;position:sticky;top:0;z-index:100;background:rgba(0,0,0,.9);padding:5px;border:2px solid #f00}
+.nav button{padding:8px 15px;background:#800;border:none;color:#fff;cursor:pointer;font-size:.8em}
 .nav button.active{background:#ffd700;color:#000}
-.card{background:rgba(139,0,0,.3);backdrop-filter:blur(10px);border-radius:5px;padding:20px;margin:15px 0;border:3px solid #ff0000;box-shadow:0 0 20px rgba(255,0,0,.5);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#ff0000,transparent)}
-input,select,button{width:100%;padding:12px;margin:8px 0;border:2px solid #ff0000;background:rgba(0,0,0,.8);color:#fff;font-size:1em;clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
-input::placeholder{color:#888}
-button{cursor:pointer;transition:.3s;text-transform:uppercase;font-weight:bold}
-button:hover{background:#ff0000;box-shadow:0 0 30px #ff0000}
-.hidden{display:none !important}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
-table{width:100%;border-collapse:collapse;font-size:.85em;cursor:pointer;transition:.3s}
-th,td{padding:12px 8px;text-align:center;border:2px solid #8b0000;white-space:nowrap}
-th{background:linear-gradient(180deg,#8b0000,#000);color:#ffd700;font-size:.9em}
-tr:nth-child(odd){background:rgba(139,0,0,.2)}
-tr:hover{background:rgba(255,0,0,.3)}
-.pos1{background:linear-gradient(90deg,#ffd700,#ffed4e);color:#000;font-weight:bold}
-.pos2{background:linear-gradient(90deg,#c0c0c0,#e8e8e8);color:#000}
-.pos3{background:linear-gradient(90deg,#cd7f32,#daa520);color:#000}
-.fullscreen{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,.98);padding:40px;overflow:auto;display:none}
-.fullscreen.active{display:block}
-.fullscreen table{font-size:1.2em}
-.fullscreen th{padding:20px}
-.fullscreen td{padding:15px}
-.close-fs{position:fixed;top:20px;right:20px;background:#ff0000;border:3px solid #ffd700;width:50px;height:50px;border-radius:50%;font-size:1.5em;z-index:1001;cursor:pointer}
-.lootbox{width:200px;height:200px;margin:20px auto;background:radial-gradient(circle,#8b0000,#000);border:5px solid #ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3em;cursor:pointer;transition:.3s;box-shadow:0 0 50px #ff0000;position:relative}
-.lootbox.spin{animation:doomSpin .5s linear infinite}
-@keyframes doomSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
-.lootbox.doom{background:radial-gradient(circle,#ff0000,#8b0000);animation:doomPulse 1s infinite}
-@keyframes doomPulse{0%,100%{box-shadow:0 0 50px #ff0000}50%{box-shadow:0 0 100px #ff0000}}
-.match{display:flex;justify-content:space-between;align-items:center;padding:15px;background:rgba(0,0,0,.8);border:3px solid #ff0000;margin:10px 0;clip-path:polygon(3% 0,100% 0,97% 100%,0 100%);flex-wrap:wrap}
-.vs{font-size:2.5em;font-weight:bold;color:#ffd700;text-shadow:0 0 20px #ff0000;margin:10px}
-.upload-area{border:3px dashed #ff0000;padding:20px;text-align:center;cursor:pointer;transition:.3s;background:rgba(139,0,0,.2)}
-.upload-area:hover{border-color:#ffd700;background:rgba(255,215,0,.1)}
-#liveFeed,#galleryGrid{max-height:400px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
-.feed-item{padding:15px;border-left:5px solid #ff0000;background:rgba(0,0,0,.8);animation:doomIn .5s;clip-path:polygon(0 0,100% 0,95% 100%,0 100%)}
-@keyframes doomIn{from{opacity:0;transform:translateX(-50px)}}
-.online{display:inline-block;width:10px;height:10px;background:#00ff00;border-radius:50%;margin-right:5px;box-shadow:0 0 8px #00ff00;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.offline{background:#ff0000;box-shadow:0 0 8px #ff0000}
-.badge{display:inline-block;padding:4px 8px;background:#ff0000;color:#fff;font-size:.8em;margin-left:5px;clip-path:polygon(15% 0,100% 0,85% 100%,0 100%)}
-.div-tag{background:#ffd700;color:#000;padding:2px 6px;font-size:.7em;clip-path:polygon(20% 0,100% 0,80% 100%,0 100%)}
-.gallery-item{position:relative;border:3px solid #ff0000;overflow:hidden;cursor:pointer;transition:.3s}
-.gallery-item:hover{transform:scale(1.05);z-index:10;box-shadow:0 0 30px #ff0000}
-.gallery-item img{width:100%;height:180px;object-fit:cover}
-.gallery-item .info{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);padding:8px;font-size:.8em;border-top:2px solid #ff0000}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}
-.stat-box{background:rgba(139,0,0,.5);padding:12px;text-align:center;border:2px solid #ff0000;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%)}
-.stat-box h3{color:#ffd700;font-size:1.8em}
-#onlinePanel{background:rgba(0,0,0,.9);border:3px solid #ff0000;padding:15px;margin-bottom:20px;border-radius:5px;box-shadow:0 0 20px #ff0000}
-#onlineList{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-height:150px;overflow-y:auto}
-.online-card{background:linear-gradient(45deg,#004d00,#008000);border:2px solid #00ff00;padding:8px 15px;border-radius:5px;font-size:.9em;display:flex;align-items:center;animation:pulseGreen 2s infinite}
-@keyframes pulseGreen{0%,100%{box-shadow:0 0 5px #00ff00}50%{box-shadow:0 0 20px #00ff00}}
-.player-status{padding:5px;display:flex;align-items:center;background:rgba(255,0,0,.2);border:1px solid #ff0000;margin:3px;border-radius:3px}
-.music-player{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,.9);border:3px solid #ff0000;padding:15px;border-radius:10px;z-index:99;max-width:300px}
-.music-player input{width:100%;margin-bottom:10px;font-size:.8em}
-#tapHint{text-align:center;color:#ffd700;font-size:.8em;margin-top:5px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.expand-hint{position:absolute;top:10px;right:10px;background:#ffd700;color:#000;padding:5px 10px;font-size:.7em;clip-path:polygon(10% 0,100% 0,90% 100%,0 100%)}
+.card{background:rgba(80,0,0,.3);padding:15px;margin:10px 0;border:2px solid #f00}
+input,select,button{width:100%;padding:10px;margin:5px 0;border:1px solid #f00;background:#000;color:#fff}
+button{background:#f00;cursor:pointer}
+.hidden{display:none}
+table{width:100%;border-collapse:collapse;font-size:.8em}
+th,td{padding:8px;border:1px solid #800;text-align:center}
+th{background:#800;color:#ffd700}
+tr:hover{background:rgba(255,0,0,.2)}
+.online{width:8px;height:8px;background:#0f0;border-radius:50%;display:inline-block;margin-right:5px;animation:b 1s infinite}
+@keyframes b{0%,100%{opacity:1}50%{opacity:.3}}
+#chat{position:fixed;bottom:10px;right:10px;width:300px;background:#000;border:2px solid #f00;z-index:99}
+#chatHeader{padding:10px;background:#f00;cursor:pointer}
+#chatBody{height:200px;overflow-y:auto;padding:10px;display:none}
+#chat.open #chatBody{display:block}
+.msg{margin:5px 0;padding:5px;background:rgba(80,0,0,.5);border-left:2px solid #f00;font-size:.8em}
+.msg b{color:#ffd700}
+#chatInput{display:flex}
+#chatInput input{flex:1;margin:0}
+#chatInput button{width:60px}
+#onlinePanel{background:#000;border:2px solid #f00;padding:10px;margin:10px 0;font-size:.8em}
+#onlineList{display:flex;flex-wrap:wrap;gap:5px}
+.o{background:#050;border:1px solid #0f0;padding:3px 8px;font-size:.7em}
+.fs{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:1000;padding:20px;display:none;overflow:auto}
+.fs.active{display:block}
+.close{position:fixed;top:10px;right:10px;background:#f00;border:none;padding:10px 15px;font-size:1.2em;z-index:1001}
 </style>
 </head>
 <body>
 <div class="overlay">
 <div class="container">
-<h1>☠️ DOOMSDAY TOURNAMENT ☠️</h1>
-<h3 style="text-align:center;color:#ff0000;margin-bottom:15px;font-size:1em">eFootball 2026 - Only The Strong Survive</h3>
+<h1>☠️ DOOMSDAY 2026 ☠️</h1>
 
 <div id="login" class="card">
-<h2 style="color:#ff0000;text-align:center;margin-bottom:15px">Enter The Killing Field</h2>
-<div class="grid">
-<div>
-<input type="text" id="username" placeholder="Warrior Tag" required>
-<input type="text" id="coach" placeholder="Coach Name" required>
-<input type="number" id="strength" placeholder="Team Strength" required>
+<h3 style="color:#f00;text-align:center">ENTER THE WAR</h3>
+<input id="u" placeholder="Username" required>
+<input id="c" placeholder="Coach" required>
+<input id="s" type="number" placeholder="Strength" required>
+<input id="p" placeholder="Favorite Player" required>
+<select id="d" required><option value="">Division</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select>
+<button onclick="r()">JOIN</button>
 </div>
-<div>
-<input type="text" id="player" placeholder="Ace Player" required>
-<select id="division" required>
-<option value="">Select Division</option>
-<option value="1">Div 1 - GOD</option>
-<option value="2">Div 2 - ELITE</option>
-<option value="3">Div 3 - MASTER</option>
-<option value="4">Div 4 - DIAMOND</option>
-<option value="5">Div 5 - PLATINUM</option>
-<option value="6">Div 6 - GOLD</option>
-<option value="7">Div 7 - SILVER</option>
-<option value="8">Div 8 - BRONZE</option>
-<option value="9">Div 9 - ROOKIE</option>
-</select>
-<button onclick="register()" style="background:#ff0000;font-size:1.2em">JOIN WAR</button>
+
+<div id="dash" class="hidden">
+<div class="nav">
+<button onclick="t('h')" id="nh">🏠</button>
+<button onclick="t('l')" id="nl">🎲</button>
+<button onclick="t('t')" id="nt">⚔️</button>
+<button onclick="t('up')" id="nup">📸</button>
+<button onclick="t('g')" id="ng">💀</button>
+<button onclick="t('li')" id="nli">🔴</button>
+<button onclick="logout()">EXIT</button>
 </div>
+
+<div id="onlinePanel"><b style="color:#0f0">ONLINE:</b> <span id="oc">0</span><div id="onlineList"></div></div>
+
+<div id="h" class="card">
+<h3>Welcome <span id="wn"></span></h3>
+<p>Div: <span id="sd"></span> | Str: <span id="ss"></span> | Pts: <span id="sp">0</span> | Rank: <span id="sr">-</span></p>
+</div>
+
+<div id="l" class="card hidden">
+<h3 style="text-align:center;color:#f00">SPIN FOR OPPONENT</h3>
+<div onclick="sp()" style="width:150px;height:150px;margin:20px auto;background:radial-gradient(#800,#000);border:3px solid #f00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2em;cursor:pointer;box-shadow:0 0 30px #f00">☠️</div>
+<div id="mr"></div>
+</div>
+
+<div id="t" class="card hidden" onclick="fs()">
+<h3>STANDINGS (TAP TO EXPAND)</h3>
+<table><thead><tr><th>#</th><th>Coach</th><th>Div</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead><tbody id="st"></tbody></table>
+</div>
+
+<div id="up" class="card hidden">
+<h3>SUBMIT RESULT</h3>
+<input id="p1" readonly>
+<input id="p2" placeholder="Opponent">
+<input id="sc1" type="number" placeholder="Your Score">
+<input id="sc2" type="number" placeholder="Their Score">
+<input type="file" id="ss" accept="image/*" onchange="pr(this)">
+<img id="prv" style="max-width:100%;display:none;margin:5px 0;border:2px solid #f00">
+<button onclick="sub()">SUBMIT</button>
+</div>
+
+<div id="g" class="card hidden">
+<h3>MEMORIES</h3>
+<div id="gal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"></div>
+</div>
+
+<div id="li" class="card hidden">
+<h3>LIVE FEED</h3>
+<div id="lf"></div>
 </div>
 </div>
 
-<div id="dashboard" class="hidden">
-<div class="nav" id="mainNav">
-<button onclick="showTab('home')" id="nav-home">🏠 HQ</button>
-<button onclick="showTab('loot')" id="nav-loot">🎲 BATTLE</button>
-<button onclick="showTab('table')" id="nav-table">⚔️ TABLE</button>
-<button onclick="showTab('upload')" id="nav-upload">📸 REPORT</button>
-<button onclick="showTab('gallery')" id="nav-gallery">💀 MEMORIES</button>
-<button onclick="showTab('live')" id="nav-live">🔴 LIVE</button>
-<button onclick="logout()" style="background:#000;color:#ff0000">EXIT</button>
+<div class="fs" id="fst">
+<button class="close" onclick="fs()">✕</button>
+<h2 style="text-align:center;color:#ffd700">FULL STANDINGS</h2>
+<table><thead><tr><th>Pos</th><th>Coach</th><th>Div</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead><tbody id="fstb"></tbody></table>
 </div>
 
-<div id="onlinePanel">
-<h4 style="color:#00ff00;text-align:center;margin-bottom:10px">⚡ WARRIORS ONLINE NOW: <span id="onlineCount">0</span></h4>
-<div id="onlineList"><p style="color:#666;width:100%;text-align:center">Scanning battlefield...</p></div>
-</div>
-
-<div id="home" class="card">
-<h2 style="color:#ffd700">Commander: <span id="welcomeName"></span></h2>
-<div class="stats">
-<div class="stat-box"><h3 id="statDiv">-</h3><div>Division</div></div>
-<div class="stat-box"><h3 id="statStr">-</h3><div>Strength</div></div>
-<div class="stat-box"><h3 id="statRank">-</h3><div>Rank</div></div>
-<div class="stat-box"><h3 id="statPts">0</h3><div>Points</div></div>
-</div>
-<p style="text-align:center;color:#ff0000;font-size:1.1em;margin-top:10px">"In war, there are no unwounded soldiers."</p>
-</div>
-
-<div id="loot" class="card hidden">
-<h2 style="text-align:center;color:#ff0000">☠️ DOOMSDAY DRAW ☠️</h2>
-<p style="text-align:center;margin-bottom:15px;font-size:.9em">Touch the blood moon to summon your opponent</p>
-<div class="lootbox" id="box" onclick="spinBox()">☠️</div>
-<div id="matchResult" style="text-align:center;margin-top:20px;font-size:1.1em"></div>
-</div>
-
-<div id="table" class="card hidden" onclick="toggleFullscreen()">
-<span class="expand-hint">TAP TO EXPAND</span>
-<h2 style="color:#ffd700;text-align:center;margin-bottom:10px">⚔️ KILLING FIELD STANDINGS ⚔️</h2>
-<div style="overflow-x:auto">
-<table id="miniTable">
-<thead><tr><th>#</th><th>Warrior</th><th>Div</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
-<tbody id="standings"></tbody>
-</table>
-</div>
-</div>
-
-<div id="upload" class="card hidden">
-<h2 style="color:#ff0000">📸 Submit Battle Report</h2>
-<div class="grid">
-<div>
-<input type="text" id="p1" placeholder="Your Name" readonly style="background:#333">
-<input type="text" id="p2" placeholder="Opponent Name" required>
-<div style="display:flex;gap:10px">
-<input type="number" id="s1" placeholder="Your Score" required style="flex:1">
-<input type="number" id="s2" placeholder="Their Score" required style="flex:1">
-</div>
-<input type="datetime-local" id="matchTime" required>
-</div>
-<div>
-<div class="upload-area" onclick="document.getElementById('ss').click()">
-<p style="font-size:1.1em">📷 UPLOAD EVIDENCE</p>
-<p style="color:#888;font-size:.8em">Screenshot must match scores</p>
-<input type="file" id="ss" accept="image/*" style="display:none" onchange="preview(this)">
-<img id="preview" style="max-width:100%;margin-top:10px;display:none;border:3px solid #ff0000">
-</div>
-</div>
-</div>
-<button onclick="submitMatch()" style="background:#ff0000;font-size:1.1em;margin-top:15px">SUBMIT TO ARCHIVES</button>
-</div>
-
-<div id="gallery" class="card hidden">
-<h2 style="color:#ffd700;text-align:center">💀 THE MEMORIES WE HAVE MADE 💀</h2>
-<p style="text-align:center;color:#888;margin-bottom:15px;font-size:.9em">Proof of battles fought...</p>
-<div id="galleryGrid"></div>
-</div>
-
-<div id="live" class="card hidden">
-<h2 style="color:#00ff00">🔴 LIVE BATTLE FEED</h2>
-<div id="liveFeed" style="display:block"></div>
-</div>
-</div>
-
-<div class="fullscreen" id="fsTable">
-<button class="close-fs" onclick="toggleFullscreen()">✕</button>
-<h2 style="color:#ffd700;text-align:center;margin:20px">⚔️ FULL BATTLE STANDINGS ⚔️</h2>
-<table>
-<thead><tr><th>Position</th><th>Warrior</th><th>Division</th><th>Played</th><th>Won</th><th>Drawn</th><th>Lost</th><th>GF</th><th>GA</th><th>GD</th><th>Points</th></tr></thead>
-<tbody id="fsStandings"></tbody>
-</table>
-</div>
-
-<div class="music-player">
-<input type="text" id="ytLink" placeholder="Paste YouTube link here" value="https://music.youtube.com/watch?v=1JltlSJH5bY">
-<button onclick="loadMusic()" style="margin:0 0 10px 0;font-size:.8em">LOAD SONG</button>
-<div id="player"></div>
-<p id="tapHint">🔊 Tap to play/pause</p>
+<div id="chat">
+<div id="chatHeader" onclick="document.getElementById('chat').classList.toggle('open')">💬 CHAT (<span id="cc">0</span>)</div>
+<div id="chatBody"><div id="msgs"></div><div id="chatInput"><input id="minp" placeholder="Message..." onkeypress="if(event.key==='Enter')snd()"><button onclick="snd()">SEND</button></div></div>
 </div>
 
 </div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-let player,currentUser=null,spinning=false,ytId=null;
-
-function onYouTubeIframeAPIReady(){}
-
-function loadMusic(){
-const link=document.getElementById('ytLink').value;
-const match=link.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|music\.youtube\.com\/watch\?v=)([^&\s]+)/);
-if(!match)return alert('Invalid YouTube link!');
-ytId=match[1];
-if(player)player.destroy();
-player=new YT.Player('player',{height:'150',width:'100%',videoId:ytId,playerVars:{autoplay:0,loop:1},events:{onReady:e=>e.target.playVideo()}});
-}
-
+const D={p:[],g:[],f:[]};let U=null,I=0;
 function init(){
-const saved=localStorage.getItem('doomsdayDB');
-const user=localStorage.getItem('currentUser');
-if(saved){
-const data=JSON.parse(saved);
-DB.players=data.players||[];
-DB.matches=data.matches||[];
-DB.gallery=data.gallery||[];
-DB.feed=data.feed||[];
+const d=localStorage.getItem('doom'),u=localStorage.getItem('user');
+if(d){const x=JSON.parse(d);D.p=x.p||[];D.g=x.g||[];D.f=x.f||[]}
+if(u){U=JSON.parse(u);sh()}
+setInterval(bo,3000);setInterval(uo,3000);setInterval(co,5000);setInterval(cl,10000);
+window.addEventListener('storage',e=>{
+if(e.key==='doom'){const x=JSON.parse(e.newValue||'{}');D.p=x.p||D.p;D.g=x.g||D.g;up()}
+if(e.key==='chat'){lc()}
+if(e.key==='online'){uo()}
+})
+bo();uo();lc()
 }
-if(user){
-currentUser=JSON.parse(user);
-showDashboard();
-}
-broadcastOnline();
-setInterval(broadcastOnline,5000);
-setInterval(updateOnlineList,5000);
-setInterval(cleanupOffline,30000);
-setInterval(simulateActivity,20000);
-window.addEventListener('storage',syncData);
-}
-
-const DB={players:[],matches:[],gallery:[],feed:[]};
-
-function broadcastOnline(){
-if(!currentUser)return;
-const online=JSON.parse(localStorage.getItem('onlineUsers')||'[]');
-const idx=online.findIndex(x=>x.u===currentUser.u);
-const data={u:currentUser.u,c:currentUser.c,d:currentUser.d,t:Date.now()};
-if(idx>=0)online[idx]=data;else online.push(data);
-localStorage.setItem('onlineUsers',JSON.stringify(online));
-}
-
-function updateOnlineList(){
-const online=JSON.parse(localStorage.getItem('onlineUsers')||'[]');
-const now=Date.now();
-const active=online.filter(x=>now-x.t<15000);
-document.getElementById('onlineCount').textContent=active.length;
-document.getElementById('onlineList').innerHTML=active.length?active.map(p=>`<div class="online-card"><span class="online"></span>${p.c} <span class="div-tag">D${p.d}</span></div>`).join(''):'<p style="color:#666;width:100%;text-align:center">No warriors detected...</p>';
-}
-
-function cleanupOffline(){
-const online=JSON.parse(localStorage.getItem('onlineUsers')||'[]');
-const now=Date.now();
-const active=online.filter(x=>now-x.t<60000);
-localStorage.setItem('onlineUsers',JSON.stringify(active));
-}
-
-function syncData(e){
-if(e.key==='doomsdayDB'){
-const data=JSON.parse(e.newValue||'{}');
-DB.players=data.players||DB.players;
-DB.gallery=data.gallery||DB.gallery;
-if(document.getElementById('table').classList.contains('hidden')===false)updateTable();
-if(document.getElementById('gallery').classList.contains('hidden')===false)updateGallery();
-}
-}
-
-function saveDB(){
-localStorage.setItem('doomsdayDB',JSON.stringify(DB));
-window.dispatchEvent(new StorageEvent('storage',{key:'doomsdayDB',newValue:JSON.stringify(DB)}));
-}
-
-function register(){
-const u=document.getElementById('username').value,c=document.getElementById('coach').value,s=parseInt(document.getElementById('strength').value),p=document.getElementById('player').value,d=document.getElementById('division').value;
-if(!u||!c||!s||!p||!d)return alert('FILL ALL FIELDS!');
-const exists=DB.players.find(x=>x.u===u);
-if(exists){
-currentUser=exists;
-saveDB();
-showDashboard();
-return;
-}
-currentUser={u,c,s,p,d:parseInt(d),pl:0,w:0,dr:0,l:0,gf:0,ga:0,gd:0,pts:0};
-DB.players.push(currentUser);
-saveDB();
-showDashboard();
-addFeed(`☠️ ${c} [Div ${d}] joined the war!`,true);
-}
-
-function showDashboard(){
-document.getElementById('login').classList.add('hidden');
-document.getElementById('dashboard').classList.remove('hidden');
-document.getElementById('mainNav').style.display='flex';
-document.getElementById('welcomeName').textContent=currentUser.c;
-document.getElementById('p1').value=currentUser.c;
-document.getElementById('statDiv').textContent=currentUser.d;
-document.getElementById('statStr').textContent=currentUser.s;
-document.getElementById('statPts').textContent=currentUser.pts;
-updateRank();
-showTab('home');
-updateTable();
-updateGallery();
-}
-
-function updateRank(){
-const sorted=DB.players.sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
-const idx=sorted.findIndex(x=>x.u===currentUser.u);
-document.getElementById('statRank').textContent=idx>=0?'#'+(idx+1):'-';
-}
-
-function showTab(t){
-['home','loot','table','upload','gallery','live'].forEach(x=>{
-document.getElementById(x).classList.add('hidden');
-document.getElementById('nav-'+x)?.classList.remove('active');
-});
-document.getElementById(t).classList.remove('hidden');
-document.getElementById('nav-'+t)?.classList.add('active');
-if(t==='table')updateTable();
-if(t==='gallery')updateGallery();
-}
-
-function toggleFullscreen(){
-document.getElementById('fsTable').classList.toggle('active');
-updateTable();
-}
-
-function spinBox(){
-if(spinning||DB.players.length<2)return;
-spinning=true;
-const b=document.getElementById('box'),m=document.getElementById('matchResult');
-b.classList.add('spin');
-m.innerHTML='<p style="color:#ff0000">SUMMONING...</p>';
-setTimeout(()=>{
-b.classList.remove('spin');
-const enemies=DB.players.filter(x=>x.u!==currentUser.u);
-const doom=enemies[Math.floor(Math.random()*enemies.length)];
-m.innerHTML=`<div class="match"><div><div class="badge">YOU</div><h3>${currentUser.c}</h3><small>Div ${currentUser.d} | STR ${currentUser.s}</small></div><div class="vs">VS</div><div><div class="badge" style="background:#8b0000">FOE</div><h3>${doom.c}</h3><small>Div ${doom.d} | STR ${doom.s}</small></div></div><button onclick="document.getElementById('p2').value='${doom.c}';showTab('upload')" style="margin-top:15px;background:#ffd700;color:#000">RECORD RESULT</button>`;
-b.classList.add('doom');
-setTimeout(()=>b.classList.remove('doom'),3000);
-spinning=false;
-},2000);
-}
-
-function updateTable(){
-const sorted=DB.players.sort((a,b)=>b.pts-a.pts||b.gd-a.gd);
-const html=sorted.map((p,i)=>{
-const cls=i===0?'pos1':i===1?'pos2':i===2?'pos3':'';
-const status=JSON.parse(localStorage.getItem('onlineUsers')||'[]').find(x=>x.u===p.u&&Date.now()-x.t<15000)?'<span class="online"></span>':'';
-return`<tr class="${cls}"><td>${i+1}</td><td>${p.c}${status}</td><td><span class="div-tag">D${p.d}</span></td><td>${p.pl}</td><td>${p.w}</td><td>${p.dr}</td><td>${p.l}</td><td style="color:${p.gd>0?'#0f0':p.gd<0?'#f00':'#fff'}">${p.gd>0?'+':''}${p.gd}</td><td style="color:#ffd700;font-weight:bold">${p.pts}</td></tr>`;
-}).join('');
-document.getElementById('standings').innerHTML=html;
-document.getElementById('fsStandings').innerHTML=sorted.map((p,i)=>{
-const cls=i===0?'pos1':i===1?'pos2':i===2?'pos3':'';
-return`<tr class="${cls}"><td>${i+1}</td><td>${p.c}</td><td>D${p.d}</td><td>${p.pl}</td><td>${p.w}</td><td>${p.dr}</td><td>${p.l}</td><td>${p.gf}</td><td>${p.ga}</td><td>${p.gd>0?'+':''}${p.gd}</td><td style="font-size:1.3em">${p.pts}</td></tr>`;
-}).join('');
-}
-
-function preview(i){
-const f=i.files[0];
-if(f){
-const r=new FileReader();
-r.onload=e=>{
-document.getElementById('preview').src=e.target.result;
-document.getElementById('preview').style.display='block';
-};
-r.readAsDataURL(f);
-}
-}
-
-function submitMatch(){
-const p1=document.getElementById('p1').value,p2=document.getElementById('p2').value,s1=parseInt(document.getElementById('s1').value),s2=parseInt(document.getElementById('s2').value),t=document.getElementById('matchTime').value,img=docume
+function bo(){if(!U)return;const o=JSON.parse(localStorage.getItem('online')||'[]'),i=o.findIndex(x=>x.u===U.u),n={u:U.u,c:U.c,d:U.d,t:Date.now()};i>-1?o[i]=n:o.push(n);localStorage.setItem('online',JSON.stringify(o))}
+function uo(){const o=JSON.parse(localStorage.getItem('online')||'[]'),a=o.filter(x=>Date.now()-x.t<10000);document.getElementById('oc').textContent=a.length;document.getElementById('onlineList').innerHTML=a.map(x=>`<span class="o"><span class="online"></span>${x.c}[D${x.d}]</span>`).join('')}
+function co(){const o=JSON.parse(localStorage.getItem('online')||'[]'),a=o.filter(x=>Date.now()-x.t<15000);localStorage.setItem('online',JSON.stringify(a))}
+function cl(){const c=JSON.parse(localStorage.getItem('chat')||'[]'),n=c.filter(x=>!D.f.find(y=>y.t===x.t));if(n.length){n.forEach(m=>D.f.push(m));D.f=D.f.slice(-50);sf();if(!document.getElementById('chat').classList.contains('open')){I+=n.length;document.getElementById('cc').textContent=I;document.getElementById('chatHeader').style.background='#0f0'}}}
+function r(){const u=document.getElementById('u').value,c=document.getElementById('c').value,s=parseInt(document.getElementById('s').value),p=document.getElementById('p').value,d=parseInt(document.getElementById('d').value);if(!u||!c||!s||!p||!d)return alert('FILL ALL');const e=D.p.find(x=>x.u===u);if(e){U=e;sv();sh();return}U={u,c,s,p,d,pl:0,w:0,dr:0,l:0,gf:0,ga:0,gd:0,pts:0};D.p.push(U);sv();sh();add(`${c} joined Div ${d}!`)}
+function sv(){localStorage.setItem('doom',JSON.stringify(D));localStorage.setItem('user',JSON.stringify(U));localStorage.setItem('online',localStorage.getItem('online')||'[]');localStorage.setItem('chat',localStorage.getItem('chat')||'[]')}
+function sh(){document.getElementById('login').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');document.getElementById('wn').textContent=U.c;document.getElementById('p1').value=U.c;document.getElementById('sd').textContent=U.d;document.getElementById('ss').textContent=U.s;document.getElementById('sp').textContent=U.pts;ur();t('h');up();gl()}
+function ur(){const s=D.p.sort((a,b)=>b.pts-a.pts||b.gd-a.gd),i=s.findIndex(x=>x.u===U.u);document.getElementById('sr').textContent=i>-1?'#'+(i+1):'-'}
+function t(x){['h','l','t','up','g','li'].forEach(y=>{document.getElementById(y).classList.add('hidden');document.getElementById('n'+y)?.classList.remove('active')});document.getElementById(x).classList.remove('hidden');document.getElementById('n'+x)?.classList.add('active');if(x==='t')up();if(x==='g')gl()}
+function fs(){document.getElementById('fst').classList.toggle('active');up()}
+function sp(){const b=document.querySelector('#l div[onclick]'),m=document.getElementById('mr');b.style.animation='s 1s linear infinite';m.innerHTML='SPINNING...';setTimeout(()=>{b.style.animation='';const e=D.p.filter(x=>x.u!==U.u),o=e[Math.floor(Math.random()*e.length)];m.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#000;border:2px solid #f00;margin:10px 0"><div>${U.c}</div><div style="color:#ffd700;font-size:2em">VS</div><div>${o.c}</div></div><button onclick="document.getElementById('p2').value='${o.c}';t('up')" style="background:#ffd700;color:#000">REPORT RESULT</button>`},1500)}
+function up(){const s=D.p.sort((a,b)=>b.pts-a.pts||b.gd-a.gd),o=JSON.parse(localStorage.getItem('online')||'[]');document.getElementById('st').innerHTML=s.map((x,i)=>`<tr style="${i<3?'background:'+(i==0?'#ffd700;color:#000':i==1?'#c0c0c0;color:#000':'#cd7f32')+';font-weight:bold':''}"><td>${i+1}</td><td>${x.c}${o.find(y=>y.u===x.u&&Date.now()-y.t<10000)?'<span class="online"></span>':''}</td><td>${x.d}</td><td>${x.pl}</td><td>${x.w}</td><td>${x.dr}</td><td>${x.l}</td><td>${x.gd>0?'+':''}${x.gd}</td><td><b>${x.pts}</b></td></tr>`).join('');document.getElementById('fstb').innerHTML=s.map((x,i)=>`<tr style="${i<3?'background:'+(i==0?'#ffd700;color:#000':i==1?'#c0c0c0;color:#000':'#cd7f32')+';font-weight:bold':''}"><td>${i+1}</td><td>${x.c}</td><td>${x.d}</td><td>${x.pl}</td><td>${x.w}</td><td>${x.dr}</td><td>${x.l}</td><td>${x.gf}</td><td>${x.ga}</td><td>${x.gd>0?'+':''}${x.gd}</td><td style="font-size:1.2em">${x.pts}</td></tr>`).join('')}
+function pr(i){const f=i.files[0];if(f){const r=new FileReader();r.onload=e=>{document.getElementById('prv').src=e.target.result;document.getElementById('prv').style.display='block'};r.readAsDataURL(f)}}
+function sub(){const p2=document.getElementById('p2').value,s1=parseInt(document.getElementById('sc1').value),s2=parseInt(document.getElementById('sc2').value),im=document.getElementById('prv').src;if(!p2||isNaN(s1)||isNaN(s2))return alert('FILL SCORES');if(!im||im==='')return alert('UPLOAD PIC');const a=D.p.find(x=>x.c===U.c),b=D.p.find(x=>x.c===p2);if(!b)return alert('OPPONENT NOT FOUND');a.pl++;b.pl++;a.gf+=s1;a.ga+=s2;b.gf+=s2;b.ga+=s1;a.gd=a.gf-a.ga;b.gd=b.gf-b.ga;let w;if(s1>s2){a.w++;a.pts+=3;w=U.c}else if(s2>s1){b.w++;b.pts+=3;w=p2}else{a.dr++;b.dr++;a.pts++;b.pts++;w='Draw'}D.g.push({p1:U.c,p2,s1,s2,im,w,d:Date.now()});sv();add(`${U.c} ${s1}-${s2} ${p2} | ${w} wins`);ur();t('t')}
+function gl(){document.getElementById('gal').innerHTML=D.g.length?D.g.slice().reverse().map(x=>`<div style="border:2px solid #f00;position:relative"><img src="${x.im}" style="width:100%;height:120px;object-fit:cover"><div style="position:absolute;bottom:0;left:0;right:0;background:#000;padding:5px;font-size:.7em">${x.p1} ${x.s1}-${x.s2} ${x.p2}</div></div>`).join(''):'<p style="color:#666">NO MEMORIES</p>'}
+function add(m){const t=new Date().toLocaleTimeString();D.f.unshift({t,m,u:U?U.c:'SYSTEM'});D.f=D.f.slice(-50);sv();sf();const c={t:Date.now(),m,u:U?U.c:'SYSTEM',tm:t},ch=JSON.parse(localStorage.getItem('chat')||'[]');ch.push(c);localStorage.setItem('chat',JSON.stringify(ch.slice(-50)))}
+function sf(){document.getElementById('lf').innerHTML=D.f.map(x=>`<div class="msg"><b>${x.u}</b> [${x.t}]<br>${x.m}</div>`).join('')}
+function lc(){const c=JSON.parse(localStorage.getItem('chat')||'[]');document.getElementById('msgs').innerHTML=c.slice().reverse().map(x=>`<div class="msg"><b style="color:${x.u===U?.c?'#0f0':'#ffd700'}">${x.u}</b> <small>${x.tm}</small><br>${x.m}</div>`).join('')}
+function snd(){const i=document.getElementById('minp'),m=i.value.trim();if(!m||!U)return;i.value='';const c={t:Date.now(),m,u:U.c,tm:new Date().toLocaleTimeString()},ch=JSON.parse(localStorage.getItem('chat')||'[]');ch.push(c);localStorage.setItem('chat',JSON.stringify(ch.slice(-50)));lc()}
+function logout(){U=null;localStorage.removeItem('user');location.reload()}
+window.onload=init;
+</script>
+</body>
+</html>
